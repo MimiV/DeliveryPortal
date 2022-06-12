@@ -1,3 +1,4 @@
+import 'package:deliveryportal/constants/style.dart';
 import 'package:deliveryportal/controllers/menu_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false, // disable debugger badge
       title: "Tittle",
       theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
+          scaffoldBackgroundColor: light,
           textTheme: GoogleFonts.mulishTextTheme(Theme.of(context).textTheme)
               .apply(bodyColor: Colors.black), // adding theme font and color
           pageTransitionsTheme: const PageTransitionsTheme(builders: {
