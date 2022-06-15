@@ -1,18 +1,21 @@
-import 'package:deliveryportal/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../constants/controllers.dart';
 import '../../helpers/responsive_widget.dart';
+import '../../widgets/custom_text.dart';
+import 'widgets/drivers_table.dart';
 
 class DriversPage extends StatelessWidget {
   const DriversPage({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Obx(() => Row(
+    return Container(
+      child: Column(
+        children: [
+          Obx(
+            () => Row(
               children: [
                 Container(
                     margin: EdgeInsets.only(
@@ -23,8 +26,14 @@ class DriversPage extends StatelessWidget {
                       weight: FontWeight.bold,
                     )),
               ],
-            ))
-      ],
+            ),
+          ),
+          Expanded(
+              child: ListView(
+            children: [DriversTable()],
+          )),
+        ],
+      ),
     );
   }
 }

@@ -1,9 +1,11 @@
 import 'package:deliveryportal/constants/controllers.dart';
 import 'package:deliveryportal/constants/style.dart';
+import 'package:deliveryportal/views/authentication/authentication.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../helpers/responsive_widget.dart';
 import '../routes/route.dart';
+import '../views/authentication/auth.dart';
 import 'custom_text.dart';
 import 'side_menu_item.dart';
 
@@ -56,33 +58,42 @@ class SideMenu extends StatelessWidget {
               children: ResponsiveWidget.isSmallScreen(context)
                   ? driverMenuItems
                       .map((item) => SideMenuItem(
-                          itemName: item == authenticationPageRoute
-                              ? "Log Out"
-                              : item,
+                          itemName: item.name,
                           onTap: () {
-                            if (item == authenticationPageRoute) {}
-                            if (!menuController.isActive(item)) {
-                              menuController.changeActiveItemTo(item);
+                            if (item.route == authenticationPageRoute) {
+                              signOutGoogle();
+                              menuController
+                                  .changeActiveItemTo(homePageDisplayName);
+                              Get.offAllNamed(authenticationPageRoute);
+                            }
+
+                            if (!menuController.isActive(item.name)) {
+                              menuController.changeActiveItemTo(item.name);
                               if (ResponsiveWidget.isSmallScreen(context)) {
                                 Get.back();
                               }
-                              navigationController.navigateTo(item);
+                              navigationController.navigateTo(item.route);
                             }
                           }))
                       .toList()
                   : sideMenuItems
                       .map((item) => SideMenuItem(
-                          itemName: item == authenticationPageRoute
-                              ? "Log Out"
-                              : item,
+                          itemName: item.name,
                           onTap: () {
-                            if (item == authenticationPageRoute) {}
-                            if (!menuController.isActive(item)) {
-                              menuController.changeActiveItemTo(item);
-                              if (ResponsiveWidget.isSmallScreen(context)) {
-                                Get.back();
+                            if (item.route == authenticationPageRoute) {
+                              // Get.offAll(() => AuthenticationPage());
+                              signOutGoogle();
+                              menuController
+                                  .changeActiveItemTo(homePageDisplayName);
+                              Get.offAllNamed(authenticationPageRoute);
+                            } else {
+                              if (!menuController.isActive(item.name)) {
+                                menuController.changeActiveItemTo(item.name);
+                                if (ResponsiveWidget.isSmallScreen(context)) {
+                                  Get.back();
+                                }
+                                navigationController.navigateTo(item.route);
                               }
-                              navigationController.navigateTo(item);
                             }
                           }))
                       .toList())

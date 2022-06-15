@@ -16,7 +16,7 @@ class InfoCard extends StatelessWidget {
       this.title,
       this.value,
       this.topColor,
-      this.isActive,
+      this.isActive = false,
       this.onTap})
       : super(key: key);
 
@@ -46,6 +46,19 @@ class InfoCard extends StatelessWidget {
                   ],
                 ),
                 Expanded(child: Container()),
+                RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(children: [
+                      TextSpan(
+                          text: "$title\n",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: isActive! ? active : lightGrey)),
+                      TextSpan(
+                          text: "$value",
+                          style: TextStyle(
+                              fontSize: 40, color: isActive! ? active : dark)),
+                    ])),
                 Expanded(child: Container()),
               ],
             )),
