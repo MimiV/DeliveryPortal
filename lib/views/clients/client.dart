@@ -19,6 +19,8 @@ class ClientsPage extends StatelessWidget {
             () => Row(
               children: [
                 Container(
+                    height: 100,
+                    //width: 400,
                     margin: EdgeInsets.only(
                         top: ResponsiveWidget.isSmallScreen(context) ? 56 : 6),
                     child: CustomText(
@@ -29,12 +31,20 @@ class ClientsPage extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
-              child: ListView(
+          ListView(
+            shrinkWrap: true,
             children: [
               Clientstable(),
             ],
-          )),
+          ),
+          // Expanded(
+          //     child: ListView(
+          //   shrinkWrap: true,
+          //   children: [
+          //     Clientstable(),
+          //   ],
+          // )
+          // ),
         ],
       ),
     );

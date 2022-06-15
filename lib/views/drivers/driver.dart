@@ -30,7 +30,8 @@ class DriversPage extends StatelessWidget {
           ),
           Expanded(
               child: ListView(
-            children: [DriversTable()],
+            shrinkWrap: true,
+            children: [],
           )),
         ],
       ),

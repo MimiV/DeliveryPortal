@@ -62,20 +62,20 @@ class AvailableDriversTable extends StatelessWidget {
                   7,
                   (index) => DataRow(cells: [
                         const DataCell(CustomText(text: "Test driver")),
-                        const DataCell(CustomText(text: "Boston")),
+                        const DataCell(CustomText(text: "30")),
                         DataCell(Row(
                           mainAxisSize: MainAxisSize.min,
                           children: const [
-                            Icon(
-                              Icons.star,
-                              color: Colors.deepOrange,
-                              size: 18,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
+                            // Icon(
+                            //   Icons.star,
+                            //   color: Colors.deepOrange,
+                            //   size: 18,
+                            // ),
+                            // SizedBox(
+                            //   width: 5,
+                            // ),
                             CustomText(
-                              text: "4.5",
+                              text: "4",
                             )
                           ],
                         )),
@@ -88,7 +88,7 @@ class AvailableDriversTable extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 6),
                             child: CustomText(
-                              text: "Assign Delivery",
+                              text: "Edit Deliveries",
                               color: active.withOpacity(.7),
                               weight: FontWeight.bold,
                             ))),

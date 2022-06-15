@@ -26,7 +26,7 @@ class Clientstable extends StatelessWidget {
       child: DataTable2(
           columnSpacing: 12,
           horizontalMargin: 12,
-          minWidth: 600,
+          minWidth: 300,
           columns: [
             DataColumn2(
               label: Text("Name"),

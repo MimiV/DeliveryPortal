@@ -35,10 +35,10 @@ class DriversTable extends StatelessWidget {
               size: ColumnSize.L,
             ),
             DataColumn(
-              label: Text('Location'),
+              label: Text('Total Deliveries'),
             ),
             DataColumn(
-              label: Text('Total Deliveries'),
+              label: Text('Availability'),
             ),
             DataColumn(
               label: Text('Action'),
@@ -48,20 +48,12 @@ class DriversTable extends StatelessWidget {
               15,
               (index) => DataRow(cells: [
                     DataCell(CustomText(text: "Test Driver")),
-                    DataCell(CustomText(text: "New yourk city")),
+                    DataCell(CustomText(text: "30")),
                     DataCell(Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
-                          Icons.star,
-                          color: Colors.deepOrange,
-                          size: 18,
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
                         CustomText(
-                          text: "4.5",
+                          text: "M-F",
                         )
                       ],
                     )),
@@ -74,7 +66,7 @@ class DriversTable extends StatelessWidget {
                         padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                         child: CustomText(
-                          text: "Block",
+                          text: "Edit Delivies",
                           color: active.withOpacity(.7),
                           weight: FontWeight.bold,
                         ))),
