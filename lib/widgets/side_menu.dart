@@ -55,48 +55,53 @@ class SideMenu extends StatelessWidget {
           ),
           Column(
               mainAxisSize: MainAxisSize.min,
-              children: ResponsiveWidget.isSmallScreen(context)
-                  ? driverMenuItems
-                      .map((item) => SideMenuItem(
-                          itemName: item.name,
-                          onTap: () {
-                            if (item.route == authenticationPageRoute) {
-                              signOutGoogle();
-                              menuController
-                                  .changeActiveItemTo(homePageDisplayName);
-                              Get.offAllNamed(authenticationPageRoute);
-                            }
+              children: ResponsiveWidget.isSmallScreen(context) 
+              ? //if smallscreen
+              driverMenuItems.map(
+                (item) => SideMenuItem(
+                  itemName: item.name,
+                  onTap: () {
+                    if (item.route == authenticationPageRoute) {
+                      signOutGoogle();
+                      menuController
+                          .changeActiveItemTo(homePageDisplayName);
+                      Get.offAllNamed(authenticationPageRoute);
+                    }
 
-                            if (!menuController.isActive(item.name)) {
-                              menuController.changeActiveItemTo(item.name);
-                              if (ResponsiveWidget.isSmallScreen(context)) {
-                                Get.back();
-                              }
-                              navigationController.navigateTo(item.route);
-                            }
-                          }))
-                      .toList()
-                  : sideMenuItems
-                      .map((item) => SideMenuItem(
-                          itemName: item.name,
-                          onTap: () {
-                            if (item.route == authenticationPageRoute) {
-                              // Get.offAll(() => AuthenticationPage());
-                              signOutGoogle();
-                              menuController
-                                  .changeActiveItemTo(homePageDisplayName);
-                              Get.offAllNamed(authenticationPageRoute);
-                            } else {
-                              if (!menuController.isActive(item.name)) {
-                                menuController.changeActiveItemTo(item.name);
-                                if (ResponsiveWidget.isSmallScreen(context)) {
-                                  Get.back();
-                                }
-                                navigationController.navigateTo(item.route);
-                              }
-                            }
-                          }))
-                      .toList())
+                    if (!menuController.isActive(item.name)) {
+                      menuController.changeActiveItemTo(item.name);
+                      if (ResponsiveWidget.isSmallScreen(context)) {
+                        Get.back();
+                      }
+                      navigationController.navigateTo(item.route);
+                    }
+                  }
+                )
+              ).toList()
+              : //else 
+              sideMenuItems.map(
+                (item) => SideMenuItem(
+                  itemName: item.name,
+                  onTap: () {
+                    if (item.route == authenticationPageRoute) {
+                      // Get.offAll(() => AuthenticationPage());
+                      signOutGoogle();
+                      menuController
+                          .changeActiveItemTo(homePageDisplayName);
+                      Get.offAllNamed(authenticationPageRoute);
+                    } else {
+                      if (!menuController.isActive(item.name)) {
+                        menuController.changeActiveItemTo(item.name);
+                        if (ResponsiveWidget.isSmallScreen(context)) {
+                          Get.back();
+                        }
+                        navigationController.navigateTo(item.route);
+                      }
+                    }
+                  } //ontap
+                )
+              ).toList()
+          )
         ],
       ),
     );

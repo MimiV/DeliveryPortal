@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
+import 'dart:math';
 import '../../../services/database.dart';
 import 'info_card.dart';
 
@@ -17,16 +17,18 @@ class HomeCardsLargeScreen extends StatelessWidget {
           title: "Total Deliveries",
           value: "7",
           onTap: () {
-            var testdata = {
-              "name": "Michael Vasconcelos",
-              "TotalDeliveries": 10,
-              "completed": 2
-            };
+            // var testdata = {
+            //   "name": "Michael Vasconcelos",
+            //   "TotalDeliveries": 10,
+            //   "completed": 2
+            // };
             //var id = sendTestData(testdata);
             //sendData(testdata);
             //var r = createData(testdata);
-            sendData();
-            print("response --^^");
+            //sendData();            
+            generateDrivers();
+
+            //print("response --^^");
             //print(r);
             //print(id);
           },
@@ -40,7 +42,8 @@ class HomeCardsLargeScreen extends StatelessWidget {
           value: "17",
           topColor: Colors.lightGreen,
           onTap: () {
-            getData();
+            //getData();
+            getDrivers();
           },
         ),
         SizedBox(
@@ -50,7 +53,9 @@ class HomeCardsLargeScreen extends StatelessWidget {
           title: "Cancelled delivery",
           value: "3",
           topColor: Colors.redAccent,
-          onTap: () {},
+          onTap: () {
+
+          },
         ),
         SizedBox(
           width: _width / 64,

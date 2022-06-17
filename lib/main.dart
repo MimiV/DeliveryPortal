@@ -29,8 +29,7 @@ Future<void> main() async {
     "appId": "1:439891507756:web:3759ca7414613792faaf89"
   };
 
-  FirebaseApp app = await Firebase.initializeApp(
-      options: FirebaseOptions.fromMap(firebaseConfig));
+  FirebaseApp app = await Firebase.initializeApp(options: FirebaseOptions.fromMap(firebaseConfig));
   //debugPrint(app.toString());
   runApp(MyApp(isLogged: isLogged));
 }
@@ -43,29 +42,31 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     print(isLogged);
 
-    return GetMaterialApp(
+    return GetMaterialApp (
       initialRoute: isLogged ? homePageRoute : authenticationPageRoute,
-      unknownRoute: GetPage(
-          name: "/not-found",
-          page: () => PageNotFound(),
-          transition: Transition.fadeIn),
+      unknownRoute: GetPage (
+        name: "/not-found",
+        page: () => PageNotFound(),
+        transition: Transition.fadeIn
+      ),
       getPages: [
         GetPage(name: rootRoute, page: () => SiteLayout()),
-        GetPage(
-            name: authenticationPageRoute, page: () => AuthenticationPage()),
+        GetPage(name: authenticationPageRoute, page: () => AuthenticationPage()),
       ],
       // used for the getX routing controller
       debugShowCheckedModeBanner: false, // disable debugger badge
       title: "DeliveryPortal",
       theme: ThemeData(
-          scaffoldBackgroundColor: light,
-          textTheme: GoogleFonts.mulishTextTheme(Theme.of(context).textTheme)
-              .apply(bodyColor: Colors.black), // adding theme font and color
-          pageTransitionsTheme: const PageTransitionsTheme(builders: {
+        scaffoldBackgroundColor: light,
+        textTheme: GoogleFonts.mulishTextTheme(Theme.of(context).textTheme).apply(bodyColor: Colors.black), // adding theme font and color
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
             TargetPlatform.iOS: FadeUpwardsPageTransitionsBuilder(),
             TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
-          }),
-          primaryColor: Colors.blue),
+          }
+        ),
+        primaryColor: Colors.blue
+      ),
       //home: AuthenticationPage(), // default screen
     );
   }

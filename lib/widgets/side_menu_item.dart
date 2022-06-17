@@ -14,7 +14,7 @@ class SideMenuItem extends StatelessWidget {
   Widget build(BuildContext context) {
     if(ResponsiveWidget.isCustomScreen(context)){
       return VerticalMenuItem(itemName: itemName, onTap: onTap,);
-    }else{
+    } else {
       return HorizontalMenuItem(itemName: itemName, onTap: onTap,);
     }
   }

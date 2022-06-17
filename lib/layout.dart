@@ -22,8 +22,8 @@ class SiteLayout extends StatelessWidget {
       ),
       body: const ResponsiveWidget(
           // changes the screen on size changes
-          largeView: LargeWindow(),
-          smallView: SmallWindow()),
+        largeView: LargeWindow(),
+        smallView: SmallWindow()),
     );
   }
 }

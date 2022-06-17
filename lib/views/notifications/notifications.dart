@@ -1,5 +1,6 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:deliveryportal/views/clients/client.dart';
+import 'package:deliveryportal/views/notifications/testdialog.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constants/style.dart';
@@ -60,7 +61,7 @@ class _NotificationsState extends State<Notifications> {
           // ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [ClientsPage()],
+            children: [testWidget()],
           ),
           actions: [
             TextButton(
@@ -147,32 +148,59 @@ class _NotificationsState extends State<Notifications> {
                   DataCell(
                     Row(
                       children: [
-                        InkWell(
-                            onTap: () => addCount(),
-                            child: Container(
-                                // decoration: BoxDecoration(
-                                //   color: light,
-                                //   borderRadius: BorderRadius.circular(20),
-                                //   border: Border.all(color: active, width: .5),
-                                // ),
-                                // padding: const EdgeInsets.symmetric(
-                                //     horizontal: 12, vertical: 6),
-                                child: CustomText(
-                              text: "Edit Deliveries",
-                              color: active.withOpacity(.7),
-                              weight: FontWeight.bold,
-                            ))),
-                        InkWell(
-                            onTap: () {
-                              showAlertDialog2();
-                              //setState(() {});
-                            },
-                            child: Container(
-                                child: CustomText(
-                              text: "Test Deliveries",
-                              color: active.withOpacity(.7),
-                              weight: FontWeight.bold,
-                            )))
+                        IconButton(
+                          onPressed: () => addCount(),
+                          hoverColor: Colors.amber,
+                          icon:Icon(Icons.countertops ,color: Colors.blue,size: 20,),
+                        ),
+                        Container(
+                          width: 20,
+                          height: 1,
+                          color: Colors.white,
+                        ),
+                        IconButton(
+                          onPressed: () => showAlertDialog2(),
+                            icon:Icon(Icons.edit,color: Colors.black,size: 15,),
+
+                        ),
+                        Container(
+                          width: 20,
+                          height: 1,
+                          color: Colors.white,
+                        ),
+                        Flexible(child: IconButton(
+                          onPressed: () {},
+                          icon:Icon(Icons.star,color: Colors.deepOrange,size: 15,),
+
+                        )
+                        
+                        )
+                        // InkWell(
+                        //     onTap: () => addCount(),
+                        //     child: Container(
+                        //         // decoration: BoxDecoration(
+                        //         //   color: light,
+                        //         //   borderRadius: BorderRadius.circular(20),
+                        //         //   border: Border.all(color: active, width: .5),
+                        //         // ),
+                        //         // padding: const EdgeInsets.symmetric(
+                        //         //     horizontal: 12, vertical: 6),
+                        //         child: CustomText(
+                        //       text: "Edit Deliveries",
+                        //       color: active.withOpacity(.7),
+                        //       weight: FontWeight.bold,
+                        //     ))),
+                        // InkWell(
+                        //     onTap: () {
+                        //       showAlertDialog2();
+                        //       //setState(() {});
+                        //     },
+                        //     child: Container(
+                        //         child: CustomText(
+                        //       text: "Test Deliveries",
+                        //       color: active.withOpacity(.7),
+                        //       weight: FontWeight.bold,
+                        //     )))
                       ],
                     ),
                     // InkWell(
