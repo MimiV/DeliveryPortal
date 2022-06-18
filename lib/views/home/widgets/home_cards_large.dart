@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -11,10 +13,11 @@ class HomeCardsLargeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width; // screen size
+    var plat = Theme.of(context).platform;
     return Row(
       children: [
         InfoCard(
-          title: "Total Deliveries",
+          title: TargetPlatform.android == plat  ? "ANDROID" : "Total Deliveries",
           value: "7",
           onTap: () {
             // var testdata = {

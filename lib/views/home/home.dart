@@ -4,10 +4,11 @@ import 'package:deliveryportal/views/home/widgets/available_drivers_table.dart';
 import 'package:deliveryportal/views/home/widgets/home_cards_large.dart';
 import 'package:deliveryportal/views/home/widgets/home_cards_medium.dart';
 import 'package:deliveryportal/views/home/widgets/home_cards_small.dart';
-import 'package:deliveryportal/views/notifications/notifications.dart';
 import 'package:deliveryportal/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../notifications/listTest.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,6 +30,7 @@ class HomePage extends StatelessWidget {
           )),
       Expanded(
           child: ListView(
+            shrinkWrap: true,
         children: [
           if (ResponsiveWidget.isLargeScreen(context) ||
               ResponsiveWidget.isMediumScreen(context))
@@ -42,7 +44,8 @@ class HomePage extends StatelessWidget {
           //   RevenueSectionLarge()
           // else
           //   RevenueSectionSmall(),
-          Notifications(),
+          //Notifications(),
+          ListTest(),
           //const AvailableDriversTable(),
         ],
       ))

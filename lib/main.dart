@@ -1,9 +1,11 @@
+import 'package:deliveryportal/MainPage.dart';
 import 'package:deliveryportal/constants/style.dart';
 import 'package:deliveryportal/controllers/menu_controller.dart';
 import 'package:deliveryportal/routes/route.dart';
 import 'package:deliveryportal/views/404/error_page.dart';
 import 'package:deliveryportal/views/authentication/auth.dart';
 import 'package:deliveryportal/views/authentication/authentication.dart';
+import 'package:deliveryportal/views/drivers/driver.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ import 'controllers/navigation_controller.dart';
 import 'layout.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   Get.put(MenuController());
   Get.put(NavigationController());
@@ -40,18 +43,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(isLogged);
+   // print(isLogged);
 
     return GetMaterialApp (
-      initialRoute: isLogged ? homePageRoute : authenticationPageRoute,
+      initialRoute: rootRoute,
+      home: MainPage(), 
       unknownRoute: GetPage (
         name: "/not-found",
         page: () => PageNotFound(),
         transition: Transition.fadeIn
       ),
       getPages: [
-        GetPage(name: rootRoute, page: () => SiteLayout()),
+        GetPage(name: rootRoute, page: () => MainPage()),
         GetPage(name: authenticationPageRoute, page: () => AuthenticationPage()),
+        GetPage(name: "/driver", page: () => DriversPage()),
+        
       ],
       // used for the getX routing controller
       debugShowCheckedModeBanner: false, // disable debugger badge

@@ -3,6 +3,8 @@ const rootRoute = "/";
 const homePageDisplayName = "Home";
 const homePageRoute = "/home";
 
+const mainPageRoute = "/";
+
 const driversPageDisplayName = "Driver";
 const driversPageRoute = "/driver";
 

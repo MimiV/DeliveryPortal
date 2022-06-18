@@ -7,14 +7,14 @@ class HomeCardsMediumScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
-
+    var plat = Theme.of(context).platform;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         Row(
           children: [
             InfoCard(
-              title: "Rides in progress",
+              title: TargetPlatform.android == plat  ? "ANDROID" : "Total Deliveries",
               value: "7",
               onTap: () {},
               topColor: Colors.orange,
