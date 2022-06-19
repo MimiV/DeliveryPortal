@@ -16,7 +16,7 @@ class HomeCardsSmallScreen extends StatelessWidget {
       child: Column(
         children: [
           InfoCardSmall(
-            title: TargetPlatform.android == plat  ? "ANDROID" : "Total Deliveries",
+            title:  "Total Deliveries",
             value: "7",
             onTap: () {},
             isActive: true,
@@ -25,7 +25,7 @@ class HomeCardsSmallScreen extends StatelessWidget {
             height: _width / 64,
           ),
           InfoCardSmall(
-            title: TargetPlatform.android.toString(),
+            title: "Package Delivered",
             value: "17",
             onTap: () {},
           ),
@@ -33,18 +33,18 @@ class HomeCardsSmallScreen extends StatelessWidget {
             height: _width / 64,
           ),
           InfoCardSmall(
-            title: "Cancelled delivery",
+            title: "Remaining Deliveries",
             value: "3",
             onTap: () {},
           ),
-          SizedBox(
-            height: _width / 64,
-          ),
-          InfoCardSmall(
-            title: "Scheduled deliveries",
-            value: "32",
-            onTap: () {},
-          ),
+          // SizedBox(
+          //   height: _width / 64,
+          // ),
+          // InfoCardSmall(
+          //   title: "Scheduled deliveries",
+          //   value: "32",
+          //   onTap: () {},
+          // ),
         ],
       ),
     );

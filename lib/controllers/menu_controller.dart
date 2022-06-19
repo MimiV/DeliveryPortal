@@ -27,13 +27,17 @@ class MenuController extends GetxController {
   Widget returnIconFor(String itemName) {
     switch (itemName) {
       case homePageDisplayName:
-        return customIcon(Icons.trending_up, itemName);
+        return customIcon(Icons.home , itemName);
       case driversPageDisplayName:
         return customIcon(Icons.drive_eta, itemName);
       case clientPageDisplayName:
         return customIcon(Icons.people_alt_outlined, itemName);
       case authenticationPageDisplayName:
         return customIcon(Icons.exit_to_app, itemName);
+      case uploadDisplayName:
+        return customIcon(Icons.upload_file, itemName);
+      case analyticsDisplayName:
+        return customIcon(Icons.analytics, itemName);
       case deliveryPageDisplayName:
         return customIcon(Icons.delivery_dining, itemName);
       default:
@@ -42,8 +46,8 @@ class MenuController extends GetxController {
   }
 
   Widget customIcon(IconData icon, String itemName) {
-    if (isActive(itemName)) return Icon(icon, size: 12, color: dark);
+    if (isActive(itemName)) return Icon(icon, size: 42, color: light);
 
-    return Icon(icon, color: isHovering(itemName) ? dark : lightGrey);
+    return Icon(icon, color: isHovering(itemName) ? light : lightGrey);
   }
 }

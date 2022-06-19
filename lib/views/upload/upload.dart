@@ -4,6 +4,8 @@ import 'package:deliveryportal/views/home/widgets/available_drivers_table.dart';
 import 'package:deliveryportal/views/home/widgets/home_cards_large.dart';
 import 'package:deliveryportal/views/home/widgets/home_cards_medium.dart';
 import 'package:deliveryportal/views/home/widgets/home_cards_small.dart';
+import 'package:deliveryportal/views/upload/upload_page.dart';
+import 'package:deliveryportal/views/upload/upload_page2.dart';
 import 'package:deliveryportal/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -11,8 +13,8 @@ import 'package:get/get.dart';
 import '../notifications/listTest.dart';
 import '../notifications/notifications.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class UploadPage extends StatelessWidget {
+  const UploadPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,28 +35,7 @@ class HomePage extends StatelessWidget {
           child: ListView(
             shrinkWrap: true,
         children: [
-          if (ResponsiveWidget.isLargeScreen(context) ||
-              ResponsiveWidget.isMediumScreen(context))
-            if (ResponsiveWidget.isCustomScreen(context))
-              const HomeCardsMediumScreen()
-            else
-              const Padding(
-                padding: EdgeInsets.all(20.0),
-                child:  HomeCardsLargeScreen(),
-              )
-          else
-            const Padding(
-              padding: EdgeInsets.all(20.0),
-              child:  HomeCardsSmallScreen(),
-            ),
-          // if (!ResponsiveWidget.isSmallScreen(context))
-          //   RevenueSectionLarge()
-          // else
-          //   RevenueSectionSmall(),
-          //Notifications(),
-          //ListTest(),
-          Notifications()
-          //const AvailableDriversTable(),
+          DeliveriesUploadPage()
         ],
       ))
     ]);

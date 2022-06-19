@@ -17,7 +17,7 @@ class LargeWindow extends StatelessWidget {
           child: SideMenu()
         ),
         Expanded(
-            flex: 5, // this takes 5 columns
+            flex: 8, // this takes 5 columns
             child: localNavigator()
         )
       ]

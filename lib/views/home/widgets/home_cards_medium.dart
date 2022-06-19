@@ -3,7 +3,7 @@ import 'info_card.dart';
 
 class HomeCardsMediumScreen extends StatelessWidget {
   const HomeCardsMediumScreen({Key? key}) : super(key: key);
-
+// TargetPlatform.android == plat  ? "ANDROID" :
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
@@ -14,7 +14,7 @@ class HomeCardsMediumScreen extends StatelessWidget {
         Row(
           children: [
             InfoCard(
-              title: TargetPlatform.android == plat  ? "ANDROID" : "Total Deliveries",
+              title:  "Total Deliveries",
               value: "7",
               onTap: () {},
               topColor: Colors.orange,
@@ -36,17 +36,9 @@ class HomeCardsMediumScreen extends StatelessWidget {
         Row(
           children: [
             InfoCard(
-              title: "Cancelled delivery",
+              title: "Remaining delivery",
               value: "3",
-              topColor: Colors.redAccent,
-              onTap: () {},
-            ),
-            SizedBox(
-              width: _width / 64,
-            ),
-            InfoCard(
-              title: "Scheduled deliveries",
-              value: "32",
+              topColor: Colors.purple,
               onTap: () {},
             ),
           ],

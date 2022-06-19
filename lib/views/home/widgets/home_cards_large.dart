@@ -16,34 +16,34 @@ class HomeCardsLargeScreen extends StatelessWidget {
     var plat = Theme.of(context).platform;
     return Row(
       children: [
-        InfoCard(
-          title: TargetPlatform.android == plat  ? "ANDROID" : "Total Deliveries",
-          value: "7",
-          onTap: () {
-            // var testdata = {
-            //   "name": "Michael Vasconcelos",
-            //   "TotalDeliveries": 10,
-            //   "completed": 2
-            // };
-            //var id = sendTestData(testdata);
-            //sendData(testdata);
-            //var r = createData(testdata);
-            //sendData();            
-            generateDrivers();
+        // InfoCard(
+        //   title: TargetPlatform.android == plat  ? "ANDROID" : "Total Deliveries",
+        //   value: "7",
+        //   onTap: () {
+        //     // var testdata = {
+        //     //   "name": "Michael Vasconcelos",
+        //     //   "TotalDeliveries": 10,
+        //     //   "completed": 2
+        //     // };
+        //     //var id = sendTestData(testdata);
+        //     //sendData(testdata);
+        //     //var r = createData(testdata);
+        //     //sendData();            
+        //     generateDrivers();
 
-            //print("response --^^");
-            //print(r);
-            //print(id);
-          },
-          topColor: Colors.orange,
-        ),
-        SizedBox(
-          width: _width / 64,
-        ),
+        //     //print("response --^^");
+        //     //print(r);
+        //     //print(id);
+        //   },
+        //   topColor: Colors.orange,
+        // ),
+        // SizedBox(
+        //   width: _width / 64,
+        // ),
         InfoCard(
-          title: "Packages delivered",
+          title: "Total Deliveries",
           value: "17",
-          topColor: Colors.lightGreen,
+          topColor: Colors.orange,
           onTap: () {
             //getData();
             getDrivers();
@@ -53,9 +53,9 @@ class HomeCardsLargeScreen extends StatelessWidget {
           width: _width / 64,
         ),
         InfoCard(
-          title: "Cancelled delivery",
+          title: "Packages Delivered",
           value: "3",
-          topColor: Colors.redAccent,
+          topColor: Colors.green,
           onTap: () {
 
           },
@@ -64,8 +64,9 @@ class HomeCardsLargeScreen extends StatelessWidget {
           width: _width / 64,
         ),
         InfoCard(
-          title: "Scheduled deliveries",
+          title: "Remaining Deliveries",
           value: "32",
+          topColor: Colors.purple,
           onTap: () {},
         ),
       ],

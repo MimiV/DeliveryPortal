@@ -5,13 +5,14 @@ import '../constants/style.dart';
 
 AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
   AppBar(
+    shape: ResponsiveWidget.isSmallScreen(context) ? Border(bottom: BorderSide(color: active, width: 2)) : Border(bottom: BorderSide(color: Colors.transparent, width: 2)),
       // if screen is small show the drawer icon, otherwise show the logo
     leading: !ResponsiveWidget.isSmallScreen(context) ? // if small screen
       Row(
         children: [
           Container(
-            padding: const EdgeInsets.only(left: 14),
-            child: Image.asset("assets/icons/logo.png", width: 20),
+            padding: const EdgeInsets.only(left: 25),
+            child: Image.asset("assets/icons/logo.png", width: 30, height: 30,),
           )
         ],
       )
@@ -27,19 +28,24 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
       children: [
         Visibility(
           child: CustomText(
-            text: "Dash",
-            color: lightGrey,
+            text: "DashPortal",
+            color: active,
             size: 20,
             weight: FontWeight.bold,
           )
         ),
-        Expanded(
-          child: Container()
+        SizedBox(
+          width: 30.5,
         ),
+        Expanded(
+          child: Container(
+            )
+        ),
+        
         IconButton(
           icon: Icon(
             Icons.settings,
-            color: dark.withOpacity(.7),
+            color: light.withOpacity(.7),
           ),
           onPressed: () {},
         ),
@@ -47,7 +53,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
           children: [
             IconButton(
               onPressed: () {},
-              icon: Icon(Icons.notifications, color: dark.withOpacity(.7))
+              icon: Icon(Icons.notifications, color: light.withOpacity(.7))
             ),
             Positioned(
               top: 7,
@@ -94,6 +100,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
             padding: const EdgeInsets.all(2),
             margin: const EdgeInsets.all(2),
             child: CircleAvatar(
+              maxRadius: 15.0,
               backgroundColor: light,
               child: Icon(Icons.person_outline, color: dark)
             )
@@ -101,7 +108,7 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
         )
       ]
     ),
-    iconTheme: IconThemeData( color: dark ),
-    backgroundColor: Colors.transparent,
+    iconTheme: IconThemeData( color: light ),
+    backgroundColor: const Color(0xff0E1420),
       //backgroundColor: Colors.red,
   );

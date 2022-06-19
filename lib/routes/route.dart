@@ -1,18 +1,24 @@
 const rootRoute = "/";
 
-const homePageDisplayName = "Home";
+const homePageDisplayName = "Dashboard";
 const homePageRoute = "/home";
 
 const mainPageRoute = "/";
 
-const driversPageDisplayName = "Driver";
+const driversPageDisplayName = "Drivers";
 const driversPageRoute = "/driver";
 
-const clientPageDisplayName = "Client";
+const clientPageDisplayName = "Clients";
 const clientPageRoute = "/client";
 
 const authenticationPageDisplayName = "Log Out";
 const authenticationPageRoute = "/auth";
+
+const uploadDisplayName = "Upload";
+const uploadPageRoute = "/upload";
+
+const analyticsDisplayName = "Analtyics";
+const analyticsPageRoute = "/anlytics";
 
 class MenuItem {
   final String name;
@@ -24,9 +30,11 @@ class MenuItem {
 // clean up later
 List<MenuItem> sideMenuItems = [
   MenuItem(homePageDisplayName, homePageRoute),
+  MenuItem(uploadDisplayName, uploadPageRoute),
   MenuItem(driversPageDisplayName, driversPageRoute),
   MenuItem(clientPageDisplayName, driversPageRoute),
-  MenuItem(authenticationPageDisplayName, authenticationPageRoute)
+  MenuItem(analyticsDisplayName, analyticsPageRoute),
+  MenuItem(authenticationPageDisplayName, authenticationPageRoute),
 ];
 
 const deliveryPageDisplayName = "Deliveries";

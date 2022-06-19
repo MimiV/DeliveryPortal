@@ -17,7 +17,12 @@ class SideMenu extends StatelessWidget {
     double _width = MediaQuery.of(context).size.width;
 
     return Container(
-      color: light,
+      decoration: BoxDecoration(
+        color: Color(0xff0E1420),
+        border: Border(right: BorderSide(color: active, width: 2)),
+        
+        ),
+      //color: Color(0xff0E1420),
       child: ListView(
         children: [
           if (ResponsiveWidget.isSmallScreen(context))
@@ -32,11 +37,11 @@ class SideMenu extends StatelessWidget {
                     SizedBox(width: _width / 48),
                     Padding(
                       padding: const EdgeInsets.only(right: 12),
-                      child: Image.asset("assets/icons/logo.png"),
+                      child: Image.asset("assets/icons/logo.png", width: 50, height: 50,),
                     ),
                     Flexible(
                       child: CustomText(
-                        text: "Dash",
+                        text: "DashPortal",
                         size: 20,
                         weight: FontWeight.bold,
                         color: active,
@@ -53,33 +58,9 @@ class SideMenu extends StatelessWidget {
           Divider(
             color: lightGrey.withOpacity(.1),
           ),
-          Column(
+          Column( 
               mainAxisSize: MainAxisSize.min,
-              children: ResponsiveWidget.isSmallScreen(context) 
-              ? //if smallscreen
-              driverMenuItems.map(
-                (item) => SideMenuItem(
-                  itemName: item.name,
-                  onTap: () {
-                    if (item.route == authenticationPageRoute) {
-                      signOutGoogle();
-                      menuController
-                          .changeActiveItemTo(homePageDisplayName);
-                      Get.offAllNamed(authenticationPageRoute);
-                    }
-
-                    if (!menuController.isActive(item.name)) {
-                      menuController.changeActiveItemTo(item.name);
-                      if (ResponsiveWidget.isSmallScreen(context)) {
-                        Get.back();
-                      }
-                      navigationController.navigateTo(item.route);
-                    }
-                  }
-                )
-              ).toList()
-              : //else 
-              sideMenuItems.map(
+              children: sideMenuItems.map(
                 (item) => SideMenuItem(
                   itemName: item.name,
                   onTap: () {
