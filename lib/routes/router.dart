@@ -18,13 +18,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case clientPageRoute:
       return _getPageRoute(const ClientsPage());
     case deliveryPageRoute:
-      return _getPageRoute(const DeliveryPage());
+      return _getPageRoute(DeliveryPage());
     case settingsPageRoute:
       return _getPageRoute(const SettingsPage());
     case "/analytics":
       return _getPageRoute(AnalyticsPage());
     case "/upload":
-      return _getPageRoute(UploadPage());
+      return _getPageRoute(DeliveryPage());
     default:
       return _getPageRoute(const HomePage());
   }

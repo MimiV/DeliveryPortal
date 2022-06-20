@@ -34,8 +34,8 @@ class MenuController extends GetxController {
         return customIcon(Icons.people_alt_outlined, itemName);
       case authenticationPageDisplayName:
         return customIcon(Icons.exit_to_app, itemName);
-      case uploadDisplayName:
-        return customIcon(Icons.upload_file, itemName);
+      case deliveryDisplayName:
+        return customIcon(Icons.delivery_dining_outlined , itemName);
       case analyticsDisplayName:
         return customIcon(Icons.analytics, itemName);
       case deliveryPageDisplayName:

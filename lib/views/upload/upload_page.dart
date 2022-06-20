@@ -62,7 +62,7 @@ class _UploadFilePageState extends State<UploadFilePage>
         for (var row in excel.tables[table]!.rows) {
           //print("$row");
           //print(row[1]!.value);
-          deliveries.add(DeliveryModel(0,
+          deliveries.add(DeliveryModel('0',
               '${row[0]!.value}', '${row[1]!.value}', '${row[2]!.value}',""));
         }
       }

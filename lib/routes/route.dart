@@ -14,8 +14,8 @@ const clientPageRoute = "/client";
 const authenticationPageDisplayName = "Log Out";
 const authenticationPageRoute = "/auth";
 
-const uploadDisplayName = "Upload";
-const uploadPageRoute = "/upload";
+const deliveryDisplayName = "Deliveries";
+const deliveryPageRoute = "/Deliveries";
 
 const analyticsDisplayName = "Analtyics";
 const analyticsPageRoute = "/anlytics";
@@ -30,7 +30,7 @@ class MenuItem {
 // clean up later
 List<MenuItem> sideMenuItems = [
   MenuItem(homePageDisplayName, homePageRoute),
-  MenuItem(uploadDisplayName, uploadPageRoute),
+  MenuItem(deliveryDisplayName, deliveryPageRoute),
   MenuItem(driversPageDisplayName, driversPageRoute),
   MenuItem(clientPageDisplayName, driversPageRoute),
   MenuItem(analyticsDisplayName, analyticsPageRoute),
@@ -38,7 +38,7 @@ List<MenuItem> sideMenuItems = [
 ];
 
 const deliveryPageDisplayName = "Deliveries";
-const deliveryPageRoute = "/deliveries";
+//const deliveryPageRoute = "/deliveries";
 
 const clientInfoPageDisplayName = "ClientInfo";
 const clientInfoPageRoute = "/clientInfo";

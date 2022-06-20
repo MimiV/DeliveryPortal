@@ -9,7 +9,6 @@ import 'package:deliveryportal/views/upload/upload_page2.dart';
 import 'package:deliveryportal/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../notifications/listTest.dart';
 import '../notifications/notifications.dart';
 
@@ -18,7 +17,8 @@ class UploadPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return 
+    Column(children: [
       Obx(() => Row(
             children: [
               Container(
@@ -31,13 +31,19 @@ class UploadPage extends StatelessWidget {
                   )),
             ],
           )),
-      Expanded(
-          child: ListView(
-            shrinkWrap: true,
-        children: [
-          DeliveriesUploadPage()
-        ],
-      ))
+          Expanded(
+            child: //EditDeliveryPage(), 
+             DeliveriesUploadPage()
+          ),
+      // Expanded(
+      //     child: ListView(
+      //       shrinkWrap: true,
+      //   children: [
+      //     IconButton(onPressed: (){}, icon: Icon(Icons.forward)),
+      //     //EditDeliveryPage(),
+      //     DeliveriesUploadPage()
+      //   ],
+      // ))
     ]);
   }
 }
