@@ -21,7 +21,7 @@ Future<void> main() async {
   Get.put(MenuController());
   Get.put(NavigationController());
   bool isLogged = prefs.getBool('auth') ?? false;
-  print(isLogged);
+  //print(isLogged);
 
   const firebaseConfig = {
     "apiKey": "AIzaSyAy3QsonkN_-n7ey2iSvVblUoiUmNFqmGo",

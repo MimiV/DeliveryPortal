@@ -32,14 +32,14 @@ class HorizontalMenuItem extends StatelessWidget {
                 maintainAnimation: true,
                 maintainState: true,
                 child: Container(
-                  width: 10,
+                  width: 3,
                   height: 40,
                   color: active,
                 ),
               ),
-              SizedBox(width: _width / 88),
+              SizedBox(width: _width / 200),
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(10),
                 child: menuController.returnIconFor(itemName),
               ),
               

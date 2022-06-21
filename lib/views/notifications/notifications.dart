@@ -27,16 +27,16 @@ class _NotificationsState extends State<Notifications> {
     //print(test_count);
   }
 
-  static List<Drivers> current_drivers = [
-    Drivers("michael vasconcelos", 10, 3),
-    Drivers("Bebe", 7, 2),
-    Drivers("Luna", 8, 4),
-    Drivers("Iva", 9, 1),
-    Drivers("Michelle", 10, 0),
+  static List<DriversModel> current_drivers = [
+    DriversModel("0","michael vasconcelos", "email@email.com","232423232",10, 3),
+    DriversModel("1","Bebe", "email@email.com","2224242323", 7, 2),
+    DriversModel("2","Luna", "email@email.com","232323233", 8, 4),
+    DriversModel("3","Iva", "email@email.com","423232423", 9, 1),
+    DriversModel("4","Michelle", "email@email.com","3242424232", 10, 0),
   ];
 
   // list to be displayed and filtered
-  List<Drivers> display_list = List.from(current_drivers);
+  List<DriversModel> display_list = List.from(current_drivers);
 
   void updateList(String value) {
     setState(() {
@@ -184,8 +184,11 @@ class _NotificationsState extends State<Notifications> {
                   display_list.length,
                   (index) => DataRow(cells: [
                     DataCell(CustomText(text: display_list[index].name!)),
-                    DataCell(CustomText(
-                        text: '${display_list[index].today_deliveries}')),
+                    DataCell(
+                      CustomText(
+                        text: '${display_list[index].deliveries_assigned}',
+                      )
+                    ),
                     DataCell(Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -198,7 +201,7 @@ class _NotificationsState extends State<Notifications> {
                         //   width: 5,
                         // ),
                         CustomText(
-                          text: '${current_drivers[index].completed}',
+                          text: '${current_drivers[index].deliveries_completed}',
                         )
                       ],
                     )),

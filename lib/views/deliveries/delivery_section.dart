@@ -35,6 +35,7 @@ class _DeliverySection extends State<DeliverySection>
   @override
   void initState() {
     super.initState();
+    print("RAN INIT -----");
     deliveries = widget.deliveries;
     displayList = List.from(deliveries); 
   }

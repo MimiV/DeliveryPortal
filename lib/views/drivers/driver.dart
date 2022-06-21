@@ -1,3 +1,4 @@
+import 'package:deliveryportal/views/drivers/driver_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -29,10 +30,9 @@ class DriversPage extends StatelessWidget {
             ),
           ),
           Expanded(
-              child: ListView(
-            shrinkWrap: true,
-            children: [],
-          )),
+            child:
+              DriverSectionPage(),
+          ),
         ],
       ),
     );
