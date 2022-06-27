@@ -62,7 +62,7 @@ class _SidePanelState extends State<SidePanel> {
                           TextField(
                             controller: nameController,
                             decoration: InputDecoration(
-                              labelText: 'Custome Name',
+                              labelText: 'Customer Name',
                               border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
                             ),
                           ),
