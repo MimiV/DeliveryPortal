@@ -32,7 +32,7 @@ dependencies:
   get: ^4.1.4
   google_fonts: ^2.1.0
   charts_flutter: ^0.10.0
-  data_table_2: ^2.0.3
+  data_table_2: ^2.3.3
   firebase_core: ^1.17.1
   firebase_auth: ^3.3.19
   shared_preferences: any

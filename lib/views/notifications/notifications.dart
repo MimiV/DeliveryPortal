@@ -177,7 +177,7 @@ class _NotificationsState extends State<Notifications> {
                   DataColumn2(
                     label: Text('Action'),
                     //size: ColumnSize.S,
-                    fixedWidth: 150
+                    //fixedWidth: 150
                   ),
                 ],
                 rows: List<DataRow>.generate(

@@ -376,7 +376,8 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
             DataColumn2(
                 label: Text('Delivery Info'),
                 size: ColumnSize.S,
-                fixedWidth: 100),
+                //fixedWidth: 100
+                ),
           ],
           rows: List<DataRow>.generate(
             displayList.length,

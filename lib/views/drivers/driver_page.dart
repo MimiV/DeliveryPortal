@@ -231,7 +231,8 @@ class _DrviverSectionPage extends State<DriverSectionPage>{
             DataColumn2(
                 label: Text('Driver Info'),
                 size: ColumnSize.S,
-                fixedWidth: 100),
+                //fixedWidth: 100
+            ),
           ],
           rows: List<DataRow>.generate(
             displayList.length,
