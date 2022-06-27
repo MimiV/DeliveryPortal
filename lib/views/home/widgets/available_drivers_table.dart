@@ -79,7 +79,8 @@ class AvailableDriversTable extends StatelessWidget {
                             )
                           ],
                         )),
-                        DataCell(Container(
+                        DataCell(
+                          Container(
                             decoration: BoxDecoration(
                               color: light,
                               borderRadius: BorderRadius.circular(20),
@@ -87,11 +88,17 @@ class AvailableDriversTable extends StatelessWidget {
                             ),
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 6),
-                            child: CustomText(
+                            child:
+                            
+                            
+                            CustomText(
                               text: "Edit Deliveries",
                               color: active.withOpacity(.7),
                               weight: FontWeight.bold,
-                            ))),
+                            )
+                            
+                            
+                            )),
                       ]))),
         ],
       ),

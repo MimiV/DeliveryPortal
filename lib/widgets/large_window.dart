@@ -10,12 +10,17 @@ class LargeWindow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(children: [
+    return Row(
+      children: [
       // we break the layout into 6 differet columns
-      const Expanded(child: SideMenu()),
-      Expanded(
-          flex: 5, // this takes 5 columns
-          child: localNavigator())
-    ]);
+        const Expanded(
+          child: SideMenu()
+        ),
+        Expanded(
+            flex: 8, // this takes 5 columns
+            child: localNavigator()
+        )
+      ]
+    );
   }
 }

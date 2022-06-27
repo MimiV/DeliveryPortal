@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../constants/style.dart';
 import '../../../widgets/custom_text.dart';
 
-class InfoCardSmall extends StatelessWidget {
+class InfoCardSmall extends StatefulWidget {
   final String title;
   final String value;
   final bool isActive;
@@ -18,32 +18,37 @@ class InfoCardSmall extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<InfoCardSmall> createState() => _InfoCardSmallState();
+}
+
+class _InfoCardSmallState extends State<InfoCardSmall> {
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: InkWell(
-        onTap: onTap,
+        onTap: widget.onTap,
         child: Container(
             padding: EdgeInsets.all(24),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
               border:
-                  Border.all(color: isActive ? active : lightGrey, width: .5),
+                  Border.all(color: widget.isActive ? active : lightGrey, width: .5),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(
-                  text: title,
+                  text: widget.title,
                   size: 24,
                   weight: FontWeight.w300,
-                  color: isActive ? active : lightGrey,
+                  color: widget.isActive ? active : lightGrey,
                 ),
                 CustomText(
-                  text: value,
+                  text: widget.value,
                   size: 24,
                   weight: FontWeight.bold,
-                  color: isActive ? active : dark,
+                  color: widget.isActive ? active : dark,
                 )
               ],
             )),

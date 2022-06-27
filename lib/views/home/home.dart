@@ -4,10 +4,12 @@ import 'package:deliveryportal/views/home/widgets/available_drivers_table.dart';
 import 'package:deliveryportal/views/home/widgets/home_cards_large.dart';
 import 'package:deliveryportal/views/home/widgets/home_cards_medium.dart';
 import 'package:deliveryportal/views/home/widgets/home_cards_small.dart';
-import 'package:deliveryportal/views/notifications/notifications.dart';
 import 'package:deliveryportal/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../notifications/listTest.dart';
+import '../notifications/notifications.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -29,20 +31,29 @@ class HomePage extends StatelessWidget {
           )),
       Expanded(
           child: ListView(
+            shrinkWrap: true,
         children: [
           if (ResponsiveWidget.isLargeScreen(context) ||
               ResponsiveWidget.isMediumScreen(context))
             if (ResponsiveWidget.isCustomScreen(context))
               const HomeCardsMediumScreen()
             else
-              const HomeCardsLargeScreen()
+              const Padding(
+                padding: EdgeInsets.all(20.0),
+                child:  HomeCardsLargeScreen(),
+              )
           else
-            const HomeCardsSmallScreen(),
+            const Padding(
+              padding: EdgeInsets.all(20.0),
+              child:  HomeCardsSmallScreen(),
+            ),
           // if (!ResponsiveWidget.isSmallScreen(context))
           //   RevenueSectionLarge()
           // else
           //   RevenueSectionSmall(),
-          Notifications(),
+          //Notifications(),
+          //ListTest(),
+          Notifications()
           //const AvailableDriversTable(),
         ],
       ))
