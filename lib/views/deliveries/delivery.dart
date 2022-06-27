@@ -1,20 +1,38 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:deliveryportal/constants/controllers.dart';
+import 'package:deliveryportal/controllers/delivery_controller.dart';
 import 'package:deliveryportal/helpers/responsive_widget.dart';
 import 'package:deliveryportal/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../models/delivery_model.dart';
 import '../../services/database.dart';
 import 'delivery_page.dart';
-import 'delivery_page_temp.dart';
-import 'delivery_section.dart';
 
-class DeliveryPage extends StatelessWidget {
+class DeliveryPage extends StatefulWidget {
   DeliveryPage({Key? key}) : super(key: key);
   static List<DeliveryModel> deliveryList = [];
+
+  @override
+  State<DeliveryPage> createState() => _DeliveryPageState();
+}
+
+class _DeliveryPageState extends State<DeliveryPage> {
   //final Stream<QuerySnapshot> deliveries = FirebaseFirestore.instance.collection("deliveries").snapshots();
+
+  @override
+  void initState() {
+    super.initState();
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Provider.of<DeliveryController>(context, listen: false).getAllDeliveries();
+      //Provider.of<DriverViewModel>(context, listen: false).getDeliveries();
+      //loading = false;
+    });
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -32,50 +50,7 @@ class DeliveryPage extends StatelessWidget {
                     weight: FontWeight.bold,
                   )),
             ],
-          )),
-
-          // Container(
-          //   child: FutureBuilder<QuerySnapshot>(
-          //     future:  FirebaseFirestore.instance.collection('deliveries').get(),
-          //     builder: (context, snapshot) {
-          //     if(snapshot.hasData){
-          //       final List<DocumentSnapshot> documents = snapshot.data!.docs;
-          //       deliveryList = List.from(documents.map((e) => DeliveryModel.fromSnapshot(e)));
-          //       print("ran");
-          //       return Expanded(child: DeliverySection(deliveries: deliveryList));
-          //     }
-          //     else{
-          //       return Text("errorr");
-          //     }
-          //     }
-          //   ),
-          // ),
-
-          
-          // Container(
-          //   child: deliveryList.isEmpty ? StreamBuilder<QuerySnapshot>(stream: deliveries, builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          //     if(snapshot.hasError){
-          //       return Text("error");
-          //     }
-          //     if(snapshot.connectionState == ConnectionState.waiting){
-          //       return Text("Loading");
-          //     }
-
-          //     //final data = snapshot.requireData;
-          //     //print("ran -- ");
-          //     //deliveryList = List.from(data.docs.map((e) => DeliveryModel.fromSnapshot(e)));
-          //     //deliveryList.forEach((element) { print(element.toJson());});
-          //     //deliveryUpdatedFalse();
-          //     return Expanded(child: DeliverySection(deliveries: deliveryList));
-          //   }
-          //   )
-          //   :
-          //   Expanded(child: DeliverySection(deliveries: deliveryList))
-          // )
-          // Expanded(child:
-          
-          //  ),
-          
+          )),        
           Expanded(
             child: DeliveriesSectionPage()
           ),

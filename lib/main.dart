@@ -11,7 +11,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'controllers/delivery_controller.dart';
 import 'controllers/navigation_controller.dart';
 import 'layout.dart';
 
@@ -45,7 +47,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
    // print(isLogged);
 
-    return GetMaterialApp (
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: DeliveryController(),
+        ),
+      ],
+      child:
+    GetMaterialApp (
       initialRoute: rootRoute,
       home: MainPage(), 
       unknownRoute: GetPage (
@@ -74,6 +83,6 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue
       ),
       //home: AuthenticationPage(), // default screen
-    );
+    ));
   }
 }

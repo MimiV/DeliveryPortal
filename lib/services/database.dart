@@ -9,7 +9,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:username_gen/username_gen.dart';
-
+import 'dart:developer' as developer;
 import '../models/drivers_mode.dart';
 
 
@@ -56,16 +56,73 @@ getData() async {
   });
 }
 
-Future sendDeliveryDataToDB(name, address, phoneNumber) async {
+// add item to items database get document id then add to delivery database
+// addItemToItemsDatabase(String itemName, String itemDescription,
+//     String itemPrice, String itemImage) async {
+//   final response = await http.post(
+//       Uri.parse(
+//           "https://deliveryportal-1ab91-default-rtdb.firebaseio.com/items.json"),
+//       body: json.encode({
+//         'itemName': itemName,
+//         'itemDescription': itemDescription,
+//         'itemPrice': itemPrice,
+//         'itemImage': itemImage,
+//       }));
+//   print("response is?");
+//   print(response.body);
+// }
+
+
+Future<List<String>> addItemToDB(String items) async {
+  List<String> allItems = items.split(',');
+  List<String> itemIds = [];
+  for (var element in allItems) {
+    final response = await FirebaseFirestore.instance.collection("items").add({
+    'name': element,
+    'deliveryDriver': '',
+    'confirmed': false,
+    'delivered': false
+    });
+    print(response);
+    itemIds.add(response.id);
+  }
+
+  return itemIds;
+}
+
+
+Future sendDeliveryDataToDB(name, address, phoneNumber,dueDate,itemString) async {
+  List<String> docs = await addItemToDB(itemString);
+
   await FirebaseFirestore.instance.collection("deliveries").add({
     'name': name,
     'address':address,
     'phoneNumber': phoneNumber,
-    'assignedDriver': ''
+    'assignedDriver': '',
+    'items': docs,
+    'dueDate': dueDate,
+    'status': 'todo'
+
   });
+
+  print("delivery done");
   final prefs = await SharedPreferences.getInstance();
   prefs.setBool('delivery_updated', true);  
 }
+
+Future <void> updateDelivery(uid, driver) async {
+  FirebaseFirestore.instance.collection("deliveries").doc(uid).update({
+    'assignedDriver': driver
+  });
+}
+
+Future <void> addStatus(uid) async {
+  FirebaseFirestore.instance.collection("deliveries").doc(uid).update({
+    'status': 'todo'
+  });
+}
+
+
 
 Future<QuerySnapshot<Map<String, dynamic>>> getAllDeliveries() async {
     return await FirebaseFirestore.instance.collection('deliveries').get();
@@ -83,6 +140,18 @@ Future<void> addDriverToDB(name,email, phoneNumber) async {
     'phoneNumber': phoneNumber,
     'deliveries_assigned': 0,
     'deliveries_completed': 0
+  });
+}
+
+//Add drivers to firebase firestore
+Future<void> addDeliveryToDB(name,address, phoneNumber,dueDate,items) async {
+  List<String> docs = await addItemToDB(items);
+  await FirebaseFirestore.instance.collection("drivers").add({
+    'name': name,
+    'phoneNumber': phoneNumber,
+    'dueDate': dueDate,
+    'items': docs,
+    'status': 'todo'
   });
 }
 
@@ -119,6 +188,7 @@ Future<List<DeliveryModel>> getDeliveries() async {
   deliveries.docs.forEach((doc) {
     deliveryList.add(DeliveryModel.fromSnapshot(doc));
   });
+  developer.log('Getting deliveries', name: 'getDeliveries');
   return deliveryList;
 }
 

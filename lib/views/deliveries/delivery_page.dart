@@ -2,18 +2,24 @@
 import 'dart:typed_data';
 
 import 'package:data_table_2/data_table_2.dart';
+import 'package:deliveryportal/controllers/delivery_controller.dart';
 import 'package:deliveryportal/models/delivery_model.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:provider/provider.dart';
 import '../../../constants/style.dart';
 import '../../../widgets/custom_text.dart';
 import '../../helpers/responsive_widget.dart';
 import '../../models/drivers_mode.dart';
 import '../../services/database.dart';
-import '../upload/widgets/side_panel.dart';
 import 'dart:developer' as developer;
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+
+import 'widgets/side_panel.dart';
 
 /// * example of stateful widget changing its value when edit is pressed
 class DeliveriesSectionPage extends StatefulWidget {
@@ -34,28 +40,33 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
   @override
   void initState() {
     super.initState();
-    getDeliveries().then((value) => 
-      setState(() {
-        displayList = value;
-        deliveries = value;
-        isDataLoaded = true;
-      }
-    ));
+    // getDeliveries().then((value) => 
+    //   setState(() {
+    //     displayList = value;
+    //     deliveries = value;
+    //     isDataLoaded = true;
+    //   }
+
+
+
+      
+    // ));
+    isDataLoaded = true;
     developer.log('initStated', name: 'DeliveriesSectionPage');
   }
 
-  getDeliveryData() async {
-    var data = await getAllDeliveries();
-    developer.log('getDeliveryData loaded', name: 'DeliveriesSectionPage');
-    setState(() {
-      deliveries =
-          List.from(data.docs.map((e) => DeliveryModel.fromSnapshot(e)));
-      displayList = List.from(deliveries);
-      isDataLoaded = true;
-    });
-  }
+  // getDeliveryData() async {
+  //   var data = await getAllDeliveries();
+  //   developer.log('getDeliveryData loaded', name: 'DeliveriesSectionPage');
+  //   setState(() {
+  //     deliveries =
+  //         List.from(data.docs.map((e) => DeliveryModel.fromSnapshot(e)));
+  //     displayList = List.from(deliveries);
+  //     isDataLoaded = true;
+  //   });
+  // }
 
-  Future<void> getFile() async {
+  Future<void> getFile(context) async {
     final result = await FilePicker.platform.pickFiles();
 
     if (result != null) {
@@ -65,36 +76,38 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
       var test = file!.toList();
       var excel = Excel.decodeBytes(test);
       //parseExcel(excel);
-      showAlertDialog(fileName, excel);
+      showAlertDialog(fileName, excel,context);
+      //ConfirmDialog(name: fileName, excel: excel);
       developer.log('File loaded succesfully', name: 'DeliveriesSectionPage');
     }
-    
   }
 
-  void parseExcel(excel) {
-    for (var table in excel.tables.keys) {
-      for (var row in excel.tables[table]!.rows) {
-        if (row[0]!.value == 'name') {
-          continue;
-        }
+  // void parseExcel(excel) {
+  //   for (var table in excel.tables.keys) {
+  //     for (var row in excel.tables[table]!.rows) {
+  //       if (row[0]!.value == 'name') {
+  //         continue;
+  //       }
 
-        String? name = row[0]!.value;
-        String? address = row[1]!.value;
-        String? phonenumber = '${row[2]!.value}';
-        //DeliveryModel delivery = DeliveryModel(Null,name, address, phonenumber, "");
-        sendDeliveryDataToDB(name, address, phonenumber);
-      }
-    }
+  //       String? name = row[0]!.value;
+  //       String? address = row[1]!.value;
+  //       String? phonenumber = '${row[2]!.value}';
+  //       String? dueDate = row[3]!.value;
+  //       String? itemString = row[4]!.value;
+  //       //DeliveryModel delivery = DeliveryModel(Null,name, address, phonenumber, "");
+  //       sendDeliveryDataToDB(name, address, phonenumber,dueDate,itemString);
+  //     }
+  //   }
 
-    developer.log('Excel parsed', name: 'DeliveriesSectionPage');
+    //developer.log('Excel parsed', name: 'DeliveriesSectionPage');
 
-    setState(() {
-      isDataLoaded = false;
-      getDeliveryData();
-    });
-  }
+  //   setState(() {
+  //     isDataLoaded = false;
+  //     getDeliveryData();
+  //   });
+  // }
 
-  showAlertDialog(name, excel) {
+  showAlertDialog(name, excel,context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -111,10 +124,12 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
             ),
             TextButton(
               child: const Text("Confirm"),
-              onPressed: () => {
-                parseExcel(excel),
-                deliveryUpdatedTrue(),
-                Navigator.pop(context, true)
+              onPressed: ()  async {
+               await Provider.of<DeliveryController>(context, listen: false).parseExcel(excel);
+                //Provider.of<DeliveryController>(context, listen: false).getAllDeliveries(),
+                //parseExcel(excel),
+               // await deliveryUpdatedTrue(),
+                Navigator.pop(context, true);
               },
             )
           ],
@@ -152,28 +167,19 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
 
 
   // filter list
-  void filterList(String value) {
-    setState(() {
-      displayList = deliveries.where((element) =>
-              element.name!.toLowerCase().contains(value.toLowerCase()))
-          .toList();
-    });
-  }
-
-  void startLoading(){
-    setState(() {
-      isDataLoaded = false;
-    });
-  }
-
-  void endLoading(){
-    setState(() {
-      isDataLoaded = true;
-    });
-  }
+  // void filterList(String value) {
+  //   setState(() {
+  //     displayList = deliveries.where((element) =>
+  //             element.name!.toLowerCase().contains(value.toLowerCase()))
+  //         .toList();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final deliveryController = Provider.of<DeliveryController>(context);
+    deliveries = deliveryController.deliveryList;
+    displayList = deliveryController.displayList;
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Scaffold(
@@ -241,7 +247,9 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
         children: [
           FloatingActionButton.extended(
             backgroundColor: Colors.orange,
-            onPressed: _openEndDrawer,
+            onPressed: () async {
+              await Provider.of<DeliveryController>(context, listen: false).assignDrivers("michael@email.com");
+            },
             label: const CustomText(
               text: "Assign Drivers",
               color: Colors.white,
@@ -249,6 +257,7 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
               icon: const Icon(Icons.add_circle
             )
           ),
+          
           const SizedBox(
             width: 20,
           ),
@@ -262,10 +271,23 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
             icon: const Icon(Icons.calendar_month)),
             Expanded(child: Container()),
             FloatingActionButton.extended(
-              onPressed: getFile,
+              onPressed: _openEndDrawer,
               isExtended: ResponsiveWidget.isSmallScreen(context) ? false : true,
               label: const CustomText(
-                text: "Add Deliveries", color: Colors.white),
+                text: "Add Delivery", color: Colors.white),
+                icon: const Icon(Icons.upload_file
+                )
+            ),
+            const SizedBox(
+              width: 20,
+            ),
+            FloatingActionButton.extended(
+              onPressed:() {
+                getFile(context);
+              },
+              isExtended: ResponsiveWidget.isSmallScreen(context) ? false : true,
+              label: const CustomText(
+                text: "Upload Deliveries", color: Colors.white),
                 icon: const Icon(Icons.upload_file
                 )
             )
@@ -281,7 +303,9 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
       padding:
           const EdgeInsets.only(top: 10, left: 40.0, right: 40.0, bottom: 10),
       child: TextField(
-        onChanged: (value) => filterList(value),
+        onChanged: (value) {
+          Provider.of<DeliveryController>(context, listen: false).filterList(value);
+          },
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
             filled: true,
@@ -302,7 +326,7 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
   // Loads table
   Widget loadTable() {
     developer.log('table loaded', name: 'DeliveriesSectionPage');
-    if(!isDataLoaded){
+    if(Provider.of<DeliveryController>(context).loading){
       return const SizedBox(
         height: 400,
         width: 400,
@@ -315,6 +339,7 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
         ),
       );
     }
+    final deliveryController = Provider.of<DeliveryController>(context);
 
     return Padding(
       padding: const EdgeInsets.only(
@@ -330,7 +355,7 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
             ),
             DataColumn2(
               label: Text('Name'),
-              size: ColumnSize.M,
+              size: ColumnSize.S,
             ),
             DataColumn2(
               label: Text('Address'),
@@ -345,6 +370,10 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
               size: ColumnSize.S,
             ),
             DataColumn2(
+              label: Text('Due Date'),
+              size: ColumnSize.S,
+            ),
+            DataColumn2(
                 label: Text('Delivery Info'),
                 size: ColumnSize.S,
                 fixedWidth: 100),
@@ -352,19 +381,39 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
           rows: List<DataRow>.generate(
             displayList.length,
             (index) => DataRow(cells: [
-              DataCell(CustomText(text: displayList[index].orderId!)),
-              DataCell(CustomText(text: displayList[index].name!)),
-              DataCell(CustomText(text: displayList[index].address!)),
-              DataCell(CustomText(text: displayList[index].phoneNumber!)),
-              DataCell(CustomText(text: displayList[index].assignedDriver!)),
+              DataCell(CustomText(text: deliveryController.displayList[index].orderId!)),
+              DataCell(CustomText(text: deliveryController.displayList[index].name!)),
+              DataCell(CustomText(text: deliveryController.displayList[index].address!)),
+              DataCell(CustomText(text: deliveryController.displayList[index].phoneNumber!)),
+              DataCell(CustomText(text: deliveryController.displayList[index].assignedDriver)),
+              DataCell(CustomText(text: deliveryController.displayList[index].dueDate!.substring(0,10))),
               DataCell(FloatingActionButton(
                 mini: true,
                 onPressed: () {
-                  setState(() {
-                    idx = index;
-                  });
+                  String t = Provider.of<DeliveryController>(context, listen: false).generateBarcodes(index);
+                  
+                  // show svg
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                     // title: Text(deliveryController.displayList[index].items![0]),
+                      content: 
+                      Container(
+                        width: 400,
+                        child: 
+                      SvgPicture.string(
+                        t,
+                        allowDrawingOutsideViewBox: true,
+                      ),
+                    ),)
+                  );
+
+
+                  // setState(() {
+                  //   idx = index;
+                  // });
                   developer.log('Openning drawer', name: 'DeliveriesSectionPage');
-                  _openEndDrawer();
+                  //_openEndDrawer();
                 },
                 hoverColor: Colors.amber,
                 child: const Icon(

@@ -5,7 +5,7 @@ import 'package:deliveryportal/views/deliveries/delivery.dart';
 import 'package:deliveryportal/views/drivers/driver.dart';
 import 'package:deliveryportal/views/home/home.dart';
 import 'package:deliveryportal/views/settings/settings.dart';
-import 'package:deliveryportal/views/upload/upload.dart';
+//import 'package:deliveryportal/views/upload/upload.dart';
 import 'package:flutter/material.dart';
 
 // takes routes setting and return a page route

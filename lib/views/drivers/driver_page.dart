@@ -238,8 +238,8 @@ class _DrviverSectionPage extends State<DriverSectionPage>{
             (index) => DataRow(cells: [
               DataCell(CustomText(text: displayList[index].name!)),
               DataCell(CustomText(text: displayList[index].phoneNumber!)),
-              DataCell(CustomText(text: '${displayList[index].deliveries_assigned!}')),
-              DataCell(CustomText(text: '${displayList[index].deliveries_completed!}')),
+              DataCell(CustomText(text: '${displayList[index].deliveries_assigned}')),
+              DataCell(CustomText(text: '${displayList[index].deliveries_completed}')),
               DataCell(FloatingActionButton(
                 mini: true,
                 onPressed: () {
