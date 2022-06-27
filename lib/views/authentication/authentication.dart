@@ -47,7 +47,7 @@ class AuthenticationPage extends StatelessWidget {
               Row(
                 children: [
                   CustomText(
-                    text: "Welcome back to the admin panel.",
+                    text: "Welcome back to the DeliveryPortal management portal.",
                     color: lightGrey,
                   ),
                 ],
