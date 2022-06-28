@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pluto_grid/pluto_grid.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/home_controller.dart';
