@@ -14,47 +14,47 @@ import '../models/drivers_mode.dart';
 
 
 // send data
-sendData() {
-  http.post(
-      Uri.parse(
-          "https://deliveryportal-1ab91-default-rtdb.firebaseio.com/testdata.json"),
-      body: json.encode({
-        'firstName': "bebe",
-        'lastName': "vas",
-        'email': "bebe@email.com",
-      }));
-}
+// sendData() {
+//   http.post(
+//       Uri.parse(
+//           "https://deliveryportal-1ab91-default-rtdb.firebaseio.com/testdata.json"),
+//       body: json.encode({
+//         'firstName': "bebe",
+//         'lastName': "vas",
+//         'email': "bebe@email.com",
+//       }));
+// }
 
-deliveryUpdatedTrue() async {
-  final prefs = await SharedPreferences.getInstance();
-  prefs.setBool('delivery_updated', true);
-  print("sent data to database");
-}
+// deliveryUpdatedTrue() async {
+//   final prefs = await SharedPreferences.getInstance();
+//   prefs.setBool('delivery_updated', true);
+//   print("sent data to database");
+// }
 
-deliveryUpdatedFalse() async {
-  final prefs = await SharedPreferences.getInstance();
-  prefs.setBool('delivery_updated', false);
-  print("set updated false");
-}
+// deliveryUpdatedFalse() async {
+//   final prefs = await SharedPreferences.getInstance();
+//   prefs.setBool('delivery_updated', false);
+//   print("set updated false");
+// }
 
-Future<bool> isUpdated() async {
-  final prefs = await SharedPreferences.getInstance();
-  return prefs.getBool('delivery_updated') ?? false;
-}
+// Future<bool> isUpdated() async {
+//   final prefs = await SharedPreferences.getInstance();
+//   return prefs.getBool('delivery_updated') ?? false;
+// }
 
 
 // get data
-getData() async {
-  final response = await http.get(Uri.parse(
-      "https://deliveryportal-1ab91-default-rtdb.firebaseio.com/testdata.json?"));
-  print("response is?");
+// getData() async {
+//   final response = await http.get(Uri.parse(
+//       "https://deliveryportal-1ab91-default-rtdb.firebaseio.com/testdata.json?"));
+//   print("response is?");
 
-  final extractedData = json.decode(response.body) as Map<String, dynamic>;
-  extractedData.forEach((profileId, profileData) {
-    print(profileId);
-    print(profileData);
-  });
-}
+//   final extractedData = json.decode(response.body) as Map<String, dynamic>;
+//   extractedData.forEach((profileId, profileData) {
+//     print(profileId);
+//     print(profileData);
+//   });
+// }
 
 // add item to items database get document id then add to delivery database
 // addItemToItemsDatabase(String itemName, String itemDescription,
@@ -122,6 +122,11 @@ Future <void> addStatus(uid) async {
   });
 }
 
+Future <void> addAvailability(uid) async {
+  FirebaseFirestore.instance.collection("drivers").doc(uid).update({
+    'availability': 'M-T-W-TH-F'
+  });
+}
 
 
 Future<QuerySnapshot<Map<String, dynamic>>> getAllDeliveries() async {
@@ -130,6 +135,10 @@ Future<QuerySnapshot<Map<String, dynamic>>> getAllDeliveries() async {
 
 Future<QuerySnapshot<Map<String, dynamic>>> getAllDrivers() async {
     return await FirebaseFirestore.instance.collection('drivers').get();
+}
+
+Future<QuerySnapshot<Map<String, dynamic>>> getCompletedDeliveries() async {
+  return await FirebaseFirestore.instance.collection("deliveries").where('status', isEqualTo: 'completed').get();
 }
 
 //Add drivers to firebase firestore
@@ -154,6 +163,8 @@ Future<void> addDeliveryToDB(name,address, phoneNumber,dueDate,items) async {
     'status': 'todo'
   });
 }
+
+
 
 // register driver to firebase auth
 Future<void> registerDriver(name, email,phoneNumber) async {
@@ -180,6 +191,30 @@ Future<List<DriversModel>> getDrivers() async {
   });
   return driversList;
 }
+
+// get completed deliveries
+Future<List<DeliveryModel>> getAllCompletedDeliveries() async {
+  final QuerySnapshot<Map<String, dynamic>> deliveries = await getCompletedDeliveries();
+  final List<DeliveryModel> deliveriesList = [];
+  deliveries.docs.forEach((doc) {
+    deliveriesList.add(DeliveryModel.fromSnapshot(doc));
+  });
+  
+  return deliveriesList;
+}
+
+// get drivers from firebase based off their schedule
+Future<List<DriversModel>> getDriversAvailableToday(String day) async {
+  final QuerySnapshot<Map<String, dynamic>> drivers = await getAllDrivers();
+  final List<DriversModel> driversList = [];
+  drivers.docs.forEach((doc) {
+    if (doc.data()['availability'].contains(day)) {
+      driversList.add(DriversModel.fromSnapshot(doc));
+    }
+  });
+  return driversList;
+}
+
 
 
 Future<List<DeliveryModel>> getDeliveries() async {

@@ -147,7 +147,7 @@ packages:
       name: data_table_2
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.3"
+    version: "2.2.1"
   dotted_border:
     dependency: "direct main"
     description:
@@ -408,6 +408,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.4"
+  linked_scroll_controller:
+    dependency: transitive
+    description:
+      name: linked_scroll_controller
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.0"
   lints:
     dependency: transitive
     description:
@@ -583,6 +590,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  pluto_grid:
+    dependency: "direct main"
+    description:
+      name: pluto_grid
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.1"
   pool:
     dependency: transitive
     description:
@@ -625,6 +639,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.1.0"
+  rxdart:
+    dependency: transitive
+    description:
+      name: rxdart
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.27.4"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -805,6 +826,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  visibility_detector:
+    dependency: transitive
+    description:
+      name: visibility_detector
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.3"
   vm_service:
     dependency: transitive
     description:
@@ -863,4 +891,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.17.0 <3.0.0"
-  flutter: ">=2.10.0-0"
+  flutter: ">=2.12.0"

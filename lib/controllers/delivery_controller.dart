@@ -9,6 +9,7 @@ import '../services/database.dart';
 class DeliveryController extends ChangeNotifier {
   List<DeliveryModel>? _deliveryList; 
   List<DeliveryModel>? _displayList;
+  List<DeliveryModel>? _completedDeliveryList;
   bool? _loading;
 
 
@@ -16,13 +17,17 @@ class DeliveryController extends ChangeNotifier {
   DeliveryController() {
     _deliveryList = [];
     _displayList = [];
+    _completedDeliveryList = [];
     _loading = true;
   }
 
   List<DeliveryModel> get deliveryList => _deliveryList!;
   bool get loading => _loading!;
   List<DeliveryModel> get displayList => _displayList!;
+  List<DeliveryModel> get completedDeliveryList => _completedDeliveryList!;
 
+  int get deliveryCount => _deliveryList!.length;
+  int get completedDeliveryCount => _completedDeliveryList!.length;
 
   Future<void> getAllDeliveries() async {
     _deliveryList = await getDeliveries();
@@ -86,6 +91,9 @@ class DeliveryController extends ChangeNotifier {
   //   await getAllDeliveries();
   // }
 
+
+
+
   Future<void> assignDrivers(driver) async {
     for (var element in _deliveryList!) { 
       if (element.assignedDriver == '') {
@@ -104,6 +112,22 @@ class DeliveryController extends ChangeNotifier {
         //element.assignedDriver = 'michael@email.com';
         print(element.items);
     }
+  }
+
+  Future<void> getCompleted() async {
+    await getAllDeliveries();
+    _completedDeliveryList = _deliveryList!.where((element) =>
+            element.status == 'completed')
+        .toList();
+    print(_completedDeliveryList.toString());
+    notifyListeners();
+  }
+
+  // get from db deliveries all with status = 'completed'
+  Future<void> getCompletedDeliveries() async {
+    _completedDeliveryList = await getAllCompletedDeliveries();
+    _loading = false;
+    notifyListeners();
   }
 
   String generateBarcodes(index) {

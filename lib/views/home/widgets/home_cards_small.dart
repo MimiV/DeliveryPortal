@@ -5,19 +5,21 @@ import 'package:flutter/foundation.dart';
 import 'info_card_small.dart';
 
 class HomeCardsSmallScreen extends StatelessWidget {
-  const HomeCardsSmallScreen({Key? key}) : super(key: key);
+  int totalDeliveries = 0;
+  int packageDelivered = 0;
+  HomeCardsSmallScreen({Key? key, required this.totalDeliveries, required this.packageDelivered}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
-    var plat = Theme.of(context).platform;
+    //var plat = Theme.of(context).platform;
     return Container(
       height: 400,
       child: Column(
         children: [
           InfoCardSmall(
             title:  "Total Deliveries",
-            value: "7",
+            value: totalDeliveries.toString(),
             onTap: () {},
             isActive: true,
           ),
@@ -26,7 +28,7 @@ class HomeCardsSmallScreen extends StatelessWidget {
           ),
           InfoCardSmall(
             title: "Package Delivered",
-            value: "17",
+            value: packageDelivered.toString(),
             onTap: () {},
           ),
           SizedBox(
@@ -34,7 +36,7 @@ class HomeCardsSmallScreen extends StatelessWidget {
           ),
           InfoCardSmall(
             title: "Remaining Deliveries",
-            value: "3",
+            value: (totalDeliveries - packageDelivered).toString(),
             onTap: () {},
           ),
           // SizedBox(

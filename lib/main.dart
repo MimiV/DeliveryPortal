@@ -3,10 +3,8 @@ import 'package:deliveryportal/constants/style.dart';
 import 'package:deliveryportal/controllers/menu_controller.dart';
 import 'package:deliveryportal/routes/route.dart';
 import 'package:deliveryportal/views/404/error_page.dart';
-import 'package:deliveryportal/views/authentication/auth.dart';
 import 'package:deliveryportal/views/authentication/authentication.dart';
 import 'package:deliveryportal/views/drivers/driver.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,8 +12,8 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/delivery_controller.dart';
+import 'controllers/home_controller.dart';
 import 'controllers/navigation_controller.dart';
-import 'layout.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -52,6 +50,13 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: DeliveryController(),
         ),
+        // ChangeNotifierProvider.value(
+        //   value: HomeController(),
+        // ),
+        ChangeNotifierProvider<HomeController>(
+          create: (_) => HomeController(),
+        ),
+
       ],
       child:
     GetMaterialApp (
@@ -60,7 +65,8 @@ class MyApp extends StatelessWidget {
       unknownRoute: GetPage (
         name: "/not-found",
         page: () => PageNotFound(),
-        transition: Transition.fadeIn
+        //transition: Transition.fadeIn
+        transitionDuration: Duration.zero
       ),
       getPages: [
         GetPage(name: rootRoute, page: () => MainPage()),
@@ -82,6 +88,7 @@ class MyApp extends StatelessWidget {
         ),
         primaryColor: Colors.blue
       ),
+      transitionDuration: Duration.zero
       //home: AuthenticationPage(), // default screen
     ));
   }

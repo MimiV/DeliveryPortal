@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'info_card.dart';
 
 class HomeCardsMediumScreen extends StatelessWidget {
-  const HomeCardsMediumScreen({Key? key}) : super(key: key);
-// TargetPlatform.android == plat  ? "ANDROID" :
+  int totalDeliveries = 0;
+  int packageDelivered = 0;
+  HomeCardsMediumScreen({Key? key, required this.totalDeliveries, required this.packageDelivered}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width;
-    var plat = Theme.of(context).platform;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -15,7 +15,7 @@ class HomeCardsMediumScreen extends StatelessWidget {
           children: [
             InfoCard(
               title:  "Total Deliveries",
-              value: "7",
+              value: totalDeliveries.toString(),
               onTap: () {},
               topColor: Colors.orange,
             ),
@@ -24,7 +24,7 @@ class HomeCardsMediumScreen extends StatelessWidget {
             ),
             InfoCard(
               title: "Packages delivered",
-              value: "17",
+              value: packageDelivered.toString(),
               topColor: Colors.lightGreen,
               onTap: () {},
             ),
@@ -37,7 +37,7 @@ class HomeCardsMediumScreen extends StatelessWidget {
           children: [
             InfoCard(
               title: "Remaining delivery",
-              value: "3",
+              value: (totalDeliveries - packageDelivered).toString(),
               topColor: Colors.purple,
               onTap: () {},
             ),

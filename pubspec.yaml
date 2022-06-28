@@ -32,6 +32,7 @@ dependencies:
   get: ^4.1.4
   google_fonts: ^2.1.0
   charts_flutter: ^0.10.0
+  pluto_grid: ^4.0.1
   data_table_2: ^2.2.1
   firebase_core: ^1.17.1
   firebase_auth: ^3.3.19
