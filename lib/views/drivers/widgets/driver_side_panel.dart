@@ -7,9 +7,10 @@ import '../../../widgets/custom_text.dart';
 
 class DriverSidePanel extends StatefulWidget {
   int idx;
-  Function()? loading;
-  Function()? closeDriverSidePanel;
-  DriverSidePanel({Key? key, required this.idx, required this.closeDriverSidePanel, required this.loading}) : super(key: key);
+  Function() loading;
+  Function() closeDriverSidePanel;
+  Function(String, String, String) addNewDriver;
+  DriverSidePanel({Key? key, required this.idx, required this.closeDriverSidePanel, required this.loading, required this.addNewDriver}) : super(key: key);
 
   @override
   State<DriverSidePanel> createState() => _DriverSidePanelState();
@@ -92,13 +93,17 @@ class _DriverSidePanelState extends State<DriverSidePanel> {
                     FloatingActionButton.extended(
                       label: const CustomText(text:'Add Driver', color: Colors.white,),
                       icon: const Icon(Icons.add),
-                      onPressed: () {
+                      onPressed: () async {
                         // add the driver to the database
+                        widget.loading();
                         Navigator.pop(context);
-                        widget.loading!();
-                        registerDriver(nameController.text,emailController.text, phoneController.text).then((value) => 
-                          widget.closeDriverSidePanel!()
-                        );
+                        await widget.addNewDriver(nameController.text,emailController.text, phoneController.text);
+
+                        // widget.loading!();
+                        // registerDriver(nameController.text,emailController.text, phoneController.text).then((value) => 
+                          
+                        // );
+                       // widget.closeDriverSidePanel!();
                       },
                     ),
                     const SizedBox(width: 10),
@@ -107,7 +112,7 @@ class _DriverSidePanelState extends State<DriverSidePanel> {
                       icon: const Icon(Icons.cancel),
                       onPressed: () {
                         // close the drawer
-                        widget.closeDriverSidePanel!();
+                        widget.closeDriverSidePanel();
                       },
                     ),
 

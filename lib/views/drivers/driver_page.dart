@@ -129,7 +129,7 @@ class _DrviverSectionPage extends State<DriverSectionPage>{
             ),
           ],
         )),
-        endDrawer:DriverSidePanel(idx: idx, closeDriverSidePanel: _openEndDrawer, loading: startLoading),
+        endDrawer:DriverSidePanel(idx: idx, closeDriverSidePanel: _openEndDrawer, loading: startLoading, addNewDriver: hm.addDriver),
         endDrawerEnableOpenDragGesture: false,
       ),
     );

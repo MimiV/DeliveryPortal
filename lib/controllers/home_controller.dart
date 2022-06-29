@@ -63,6 +63,16 @@ class HomeController extends ChangeNotifier  {
     await getAllDriversAvailableToday();
   }
 
+  // add new driver
+  Future<void> addDriver(name,email,phone,) async {
+    await registerDriver(name, email, phone);
+    _loading = true;
+    notifyListeners();
+    await getAllDrivers();
+    //notifyListeners(); //already done in all deliveries
+  }
+
+
 
   
 }
