@@ -8,41 +8,19 @@ import '../../../services/database.dart';
 import 'info_card.dart';
 
 class HomeCardsLargeScreen extends StatelessWidget {
-  const HomeCardsLargeScreen({Key? key}) : super(key: key);
+  int totalDeliveries = 0;
+  int packageDelivered = 0;
+  HomeCardsLargeScreen({Key? key, required this.totalDeliveries, required this.packageDelivered}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double _width = MediaQuery.of(context).size.width; // screen size
-    var plat = Theme.of(context).platform;
+    //var plat = Theme.of(context).platform;
     return Row(
       children: [
-        // InfoCard(
-        //   title: TargetPlatform.android == plat  ? "ANDROID" : "Total Deliveries",
-        //   value: "7",
-        //   onTap: () {
-        //     // var testdata = {
-        //     //   "name": "Michael Vasconcelos",
-        //     //   "TotalDeliveries": 10,
-        //     //   "completed": 2
-        //     // };
-        //     //var id = sendTestData(testdata);
-        //     //sendData(testdata);
-        //     //var r = createData(testdata);
-        //     //sendData();            
-        //     generateDrivers();
-
-        //     //print("response --^^");
-        //     //print(r);
-        //     //print(id);
-        //   },
-        //   topColor: Colors.orange,
-        // ),
-        // SizedBox(
-        //   width: _width / 64,
-        // ),
         InfoCard(
           title: "Total Deliveries",
-          value: "17",
+          value: totalDeliveries.toString(),
           topColor: Colors.orange,
           onTap: () {
             //getData();
@@ -54,7 +32,7 @@ class HomeCardsLargeScreen extends StatelessWidget {
         ),
         InfoCard(
           title: "Packages Delivered",
-          value: "3",
+          value: packageDelivered.toString(),
           topColor: Colors.green,
           onTap: () {
 
@@ -65,7 +43,7 @@ class HomeCardsLargeScreen extends StatelessWidget {
         ),
         InfoCard(
           title: "Remaining Deliveries",
-          value: "32",
+          value: (totalDeliveries - packageDelivered).toString(),
           topColor: Colors.purple,
           onTap: () {},
         ),

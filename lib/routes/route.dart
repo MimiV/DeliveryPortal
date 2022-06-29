@@ -18,7 +18,7 @@ const deliveryDisplayName = "Deliveries";
 const deliveryPageRoute = "/Deliveries";
 
 const analyticsDisplayName = "Analtyics";
-const analyticsPageRoute = "/anlytics";
+const analyticsPageRoute = "/analytics";
 
 class MenuItem {
   final String name;
@@ -32,7 +32,7 @@ List<MenuItem> sideMenuItems = [
   MenuItem(homePageDisplayName, homePageRoute),
   MenuItem(deliveryDisplayName, deliveryPageRoute),
   MenuItem(driversPageDisplayName, driversPageRoute),
-  MenuItem(clientPageDisplayName, driversPageRoute),
+  MenuItem(clientPageDisplayName, clientPageRoute),
   MenuItem(analyticsDisplayName, analyticsPageRoute),
   MenuItem(authenticationPageDisplayName, authenticationPageRoute),
 ];

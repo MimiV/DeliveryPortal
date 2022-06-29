@@ -21,7 +21,7 @@ class DeliveryModel{
     'assignedDriver':assignedDriver,
     'items': items!.map((item) => item.toJson()).toList(),
     'status': status,
-    //'dueDate': dueDate
+    'dueDate': dueDate
   };
 
   DeliveryModel.fromSnapshot(snapshot)

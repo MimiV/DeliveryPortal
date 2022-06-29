@@ -2,11 +2,15 @@
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:provider/provider.dart';
 import '../../../constants/style.dart';
 import '../../../widgets/custom_text.dart';
+import '../../controllers/home_controller.dart';
 import '../../models/drivers_mode.dart';
 import '../../services/database.dart';
 import 'widgets/driver_side_panel.dart';
+import 'widgets/drivers_list_table.dart';
+import 'widgets/drivers_search_bar.dart';
 
 /// * example of stateful widget changing its value when edit is pressed
 class DriverSectionPage extends StatefulWidget {
@@ -68,6 +72,7 @@ class _DrviverSectionPage extends State<DriverSectionPage>{
 
   @override
   Widget build(BuildContext context) {
+    final hm = Provider.of<HomeController>(context);
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Scaffold(
@@ -111,18 +116,20 @@ class _DrviverSectionPage extends State<DriverSectionPage>{
                     height: 20,
                   ),
 
-                  Visibility(
-                    visible: isDataLoaded,
-                    child: searchBar()
-                  ),
-                  loadTable(),
+                  // Visibility(
+                  //   visible: isDataLoaded,
+                  //   child: searchBar()
+                  // ),
+                  DriversSearchBar(filterList: hm.filterList),
+                  DriversListTable(display_list: hm.displayList, onPress: _openEndDrawer,loading: hm.loading),
+                  //loadTable(),
                   
                 ],
               ),
             ),
           ],
         )),
-        endDrawer:DriverSidePanel(idx: idx, closeDriverSidePanel: _closeEndDrawer, loading: startLoading),
+        endDrawer:DriverSidePanel(idx: idx, closeDriverSidePanel: _openEndDrawer, loading: startLoading),
         endDrawerEnableOpenDragGesture: false,
       ),
     );

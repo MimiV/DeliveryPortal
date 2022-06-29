@@ -47,7 +47,7 @@ class AuthenticationPage extends StatelessWidget {
               Row(
                 children: [
                   CustomText(
-                    text: "Welcome back to the DeliveryPortal management portal.",
+                    text: "Welcome to the Management portal.",
                     color: lightGrey,
                   ),
                 ],
@@ -159,27 +159,30 @@ class AuthenticationPage extends StatelessWidget {
                 // },
                 hoverColor: Colors.black,
                 onTap: () async {
-                  await signInWithGoogle().then((result) {
-                    if (result != null) {
-                      print("logged in!!");
-                      print(result);
-                      //Get.offAllNamed(rootRoute);
-                    } else {
-                      AlertDialog(
-                        title: const Text('Login Failed'),
-                        content: const Text(
-                            'Username and/or Password are incorrect'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'OK'),
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    }
-                  }).catchError((error) {
-                    print('Registration Error: $error');
-                  });
+                  await signInWithEmailPassword(
+                          "michael@email.com", "maike21m");
+
+                  // await signInWithGoogle().then((result) {
+                  //   if (result != null) {
+                  //     print("logged in!!");
+                  //     print(result);
+                  //     //Get.offAllNamed(rootRoute);
+                  //   } else {
+                  //     AlertDialog(
+                  //       title: const Text('Login Failed'),
+                  //       content: const Text(
+                  //           'Username and/or Password are incorrect'),
+                  //       actions: <Widget>[
+                  //         TextButton(
+                  //           onPressed: () => Navigator.pop(context, 'OK'),
+                  //           child: const Text('OK'),
+                  //         ),
+                  //       ],
+                  //     );
+                  //   }
+                  // }).catchError((error) {
+                  //   print('Registration Error: $error');
+                  // });
                   // Get.offAllNamed(rootRoute);
                   //Get.offAll(() => SiteLayout());
                   // print("ended test with");

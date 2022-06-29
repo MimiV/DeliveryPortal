@@ -3,6 +3,7 @@ class DriversModel{
   String? name;
   String? email;
   String? phoneNumber;
+  String? availability;
   int? deliveries_assigned;
   int? deliveries_completed;
 
@@ -11,8 +12,10 @@ class DriversModel{
   DriversModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     phoneNumber = json['phoneNumber'];
+    email = json['email'];
     deliveries_assigned = json['deliveries_assigned'];
     deliveries_completed = json['deliveries_completed'];
+    availability = json['availability'];
   }
 
   // drivers map snapshot to drivers list
@@ -22,5 +25,6 @@ class DriversModel{
       email = snapshot.data()['email'],
       phoneNumber = snapshot.data()['phoneNumber'],
       deliveries_assigned = snapshot.data()['deliveries_assigned'],
-      deliveries_completed = snapshot.data()['deliveries_completed'];
+      deliveries_completed = snapshot.data()['deliveries_completed'],
+      availability = snapshot.data()['availability'];
 }

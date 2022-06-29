@@ -34,7 +34,7 @@ class ClientsPage extends StatelessWidget {
           ListView(
             shrinkWrap: true,
             children: [
-              Clientstable(),
+              //Clientstable(),
             ],
           ),
           // Expanded(
