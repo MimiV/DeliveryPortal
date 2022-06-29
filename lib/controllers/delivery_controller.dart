@@ -96,15 +96,14 @@ class DeliveryController extends ChangeNotifier {
 
 
   Future<void> assignDrivers(driver) async {
-    _loading = true;
-    notifyListeners();
     for (var element in _deliveryList!) { 
-      if (element.assignedDriver == '') {
         //element.assignedDriver = 'michael@email.com';
+        _deliveryList![_deliveryList!.indexOf(element)].assignedDriver = driver;
         await updateDelivery(element.orderId, driver);
-      }
     }
-    await getAllDeliveries();
+    //_loading = true;
+    notifyListeners();
+    //await getAllDeliveries();
   }
 
   void test(){
