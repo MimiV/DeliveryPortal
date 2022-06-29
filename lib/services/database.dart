@@ -177,6 +177,7 @@ Future<void> registerDriver(name, email,phoneNumber) async {
     'name': name,
     'email': email,
     'phoneNumber': phoneNumber,
+    'availability': 'M-T-W-TH-F',
     'deliveries_assigned': 0,
     'deliveries_completed': 0
   });
