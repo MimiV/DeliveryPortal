@@ -50,7 +50,7 @@ class _DriverSidePanelState extends State<DriverSidePanel> {
                             ),
                             child: Center(
                               child: CustomText(
-                                text: 'Add New Driver',
+                                text: 'Add a New Driver',
                                 size: 24,
                                 color: dark,
                                 weight: FontWeight.bold,
