@@ -78,8 +78,8 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage> with SingleTic
             TextButton(
               child: const Text("Confirm"),
               onPressed: ()  async {
-               await Provider.of<DeliveryController>(context, listen: false).parseExcel(excel);
                 Navigator.pop(context, true);
+                await Provider.of<DeliveryController>(context, listen: false).parseExcel(excel);
               },
             )
           ],

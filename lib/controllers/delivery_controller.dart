@@ -40,7 +40,7 @@ class DeliveryController extends ChangeNotifier {
   Future<void> parseExcel(excel) async {
     for (var table in excel.tables.keys) {
       for (var row in excel.tables[table]!.rows) {
-        if (row[0]!.value == 'name') {
+        if (row[0]!.value.toString().toLowerCase() == 'name') {
           continue;
         }
 
@@ -61,6 +61,7 @@ class DeliveryController extends ChangeNotifier {
     //   getDeliveryData();
     // });
     _loading = true;
+    notifyListeners();
     await getAllDeliveries();
     
     notifyListeners();
@@ -95,13 +96,14 @@ class DeliveryController extends ChangeNotifier {
 
 
   Future<void> assignDrivers(driver) async {
+    _loading = true;
+    notifyListeners();
     for (var element in _deliveryList!) { 
       if (element.assignedDriver == '') {
         //element.assignedDriver = 'michael@email.com';
         await updateDelivery(element.orderId, driver);
       }
     }
-    _loading = true;
     await getAllDeliveries();
   }
 
