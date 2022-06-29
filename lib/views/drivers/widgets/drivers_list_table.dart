@@ -66,7 +66,7 @@ class _DriversListTable extends State<DriversListTable> {
                       ),
                       DataColumn(label: CustomText(text:'Availability')),
                       DataColumn(label: CustomText(text:'Total Deliveries')),
-                      DataColumn(label: CustomText(text:'')),
+                      DataColumn(label: CustomText(text:'Action')),
                   ],
                   //columnSpacing:spaceSize(),
                   horizontalMargin: 10,

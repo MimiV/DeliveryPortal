@@ -1,7 +1,10 @@
+import 'package:deliveryportal/controllers/home_controller.dart';
 import 'package:deliveryportal/helpers/responsive_widget.dart';
 import 'package:deliveryportal/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../constants/style.dart';
+import '../controllers/delivery_controller.dart';
 
 AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
   AppBar(
@@ -47,7 +50,9 @@ AppBar topNavigationBar(BuildContext context, GlobalKey<ScaffoldState> key) =>
             Icons.settings,
             color: light.withOpacity(.7),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Provider.of<HomeController>(context, listen: false).test();
+          },
         ),
         Stack(
           children: [

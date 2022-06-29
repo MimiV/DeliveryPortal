@@ -31,7 +31,7 @@ class _ListOfDriversState extends State<ListOfDrivers> {
     //print(_width);
     double spaceSize(){
       if (ResponsiveWidget.isLargeScreen(context)){
-        return _width / 4.5;
+        return _width / 6;
       }else if(ResponsiveWidget.isMediumScreen(context)){
         return _width / 7;
       }
@@ -50,10 +50,10 @@ class _ListOfDriversState extends State<ListOfDrivers> {
                   child: PaginatedDataTable(
                     source: HomeTableData(widget.display_list),
                     columns: const [
-                      DataColumn(label: Text('ID')),
                       DataColumn(label: Text('Name')),
-                      DataColumn(label: Text('Price')),
-                      DataColumn(label: Text('Quantity')),
+                      DataColumn(label: Text('Assigned Deliveries')),
+                      DataColumn(label: Text('Completed Deliveries')),
+                      DataColumn(label: Text('Action')),
                   ],
                   columnSpacing:spaceSize(),
                   horizontalMargin: 10,
