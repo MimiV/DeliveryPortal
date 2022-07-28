@@ -35,7 +35,10 @@ class DeliveryController extends ChangeNotifier {
 
   Future<void> getAllDeliveries() async {
     _deliveryList = await getDeliveries();
+    _deliveryList!.sort((a, b) => b.dueDate!.compareTo(a.dueDate!));
     _displayList = _deliveryList;
+    // sort by due date
+    
     _loading = false;
     notifyListeners();
   }
@@ -156,6 +159,9 @@ class DeliveryController extends ChangeNotifier {
     DriversModel temp = DriversModel(
         "123", "Michael V", "michael@email.com", "123456789", 10, 0);
     _allDrivers!.add(temp);
+    DriversModel temp2 = DriversModel(
+        "123", "Michael V", "", "123456789", 10, 0);
+    _allDrivers!.add(temp2);
     notifyListeners();
   }
 
