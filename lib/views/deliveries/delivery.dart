@@ -29,7 +29,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
       Provider.of<DeliveryController>(context, listen: false).getAllDeliveries();
-      //Provider.of<DriverViewModel>(context, listen: false).getDeliveries();
+      Provider.of<DeliveryController>(context, listen: false).getAllDrivers();
       //loading = false;
     });
   }

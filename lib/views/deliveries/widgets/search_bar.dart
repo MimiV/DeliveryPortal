@@ -19,7 +19,7 @@ class _DeliverySearchBarState extends State<DeliverySearchBar> {
       child: TextField(
         onChanged: (value) {
           widget.filterList!(value);
-          },
+        },
         style: const TextStyle(color: Colors.white),
         decoration: InputDecoration(
             filled: true,
@@ -35,7 +35,6 @@ class _DeliverySearchBarState extends State<DeliverySearchBar> {
             ),
             prefixIconColor: Colors.white),
       ),
-    ); 
-    
+    );
   }
 }
