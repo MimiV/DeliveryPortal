@@ -85,23 +85,25 @@ class DeliveryTableData extends DataTableSource {
         ),
         items: items
             .map((item) => DropdownMenuItem<String>(
-                  value: item.email,
+                  value: item.name,
                   child: Text(
-                    item.email!,
+                    item.name!,
                     style: const TextStyle(
                       fontSize: 14,
                     ),
                   ),
                 ))
             .toList(),
-        value: dm.displayList[index].assignedDriver,
+        value: dm.driverNameFromEmail(dm.displayList[index].assignedDriver),
         onChanged: (value) {
           //dm.selectDriver(index, value as DriversModel);
           //var cur = value as DriversModel;
           selectedDriver = value as String?;
-          dm.displayList[index].assignedDriver = value!;
+          dm.displayList[index].assignedDriver = dm.allDriversList
+              .firstWhere((element) => element.name == selectedDriver)
+              .email!;
           dm.assignDriver(value, index);
-          print(value);
+          //print(value);
         },
         buttonHeight: 40,
         buttonWidth: 200,

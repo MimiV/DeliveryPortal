@@ -1,7 +1,6 @@
 import 'package:deliveryportal/views/drivers/driver_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../constants/controllers.dart';
 import '../../helpers/responsive_widget.dart';
 import '../../widgets/custom_text.dart';
