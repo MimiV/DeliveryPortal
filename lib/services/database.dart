@@ -78,7 +78,8 @@ Future<List<String>> addItemToDB(String items) async {
       'name': element,
       'deliveryDriver': '',
       'confirmed': false,
-      'delivered': false
+      'delivered': false,
+      'status': "not_ready"
     });
     print(response);
     itemIds.add(response.id);

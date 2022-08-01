@@ -23,7 +23,7 @@ class _PdfLabPageState extends State<PdfLabPage> {
   String getCode(String code) {
     final dm = Barcode.code128();
     final svg =
-        dm.toSvg(code, width: 100, height: 60, drawText: false, fontHeight: 15);
+        dm.toSvg(code, width: 200, height: 100, drawText: false, fontHeight: 15);
     //dm.toSvg(data)
     return svg;
   }
@@ -103,8 +103,8 @@ class _PdfLabPageState extends State<PdfLabPage> {
                               pw.SvgImage(
                                 svg: getCode(
                                     deliveriesByDriver[index].items![i]),
-                                width: 100,
-                                height: 60,
+                                width: 200,
+                                height: 100,
                               ),
                               pw.SizedBox(height: 30),
                             ]);
