@@ -43,8 +43,8 @@ class HomeTableData extends DataTableSource {
         .length;
     return DataRow(cells: [
       DataCell(Text(_data[index].name.toString())),
-      DataCell(Text(_data[index].deliveries_assigned.toString())),
-      DataCell(Text(_data[index].deliveries_completed.toString())),
+      DataCell(Text(numDeliveries.toString())),
+      DataCell(Text(completedDeliveries.toString())),
       DataCell(Row(children: [
         IconButton(
           onPressed: () => {},
