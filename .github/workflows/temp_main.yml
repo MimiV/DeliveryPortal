@@ -7,18 +7,14 @@ jobs:
       steps:
         # Checkout Repository
         - uses: actions/checkout@v1
-
         # Install Flutter command
         - uses: subosito/flutter-action@v1
-          with:
-            channel: 'dev'
-
         # Build Website
         - name: Build Website
           run: |
             flutter config --enable-web
             flutter pub get
-            flutter build web --release
+            flutter build web
           working-directory: ./
 
         # Deploy Firebase Hosting
