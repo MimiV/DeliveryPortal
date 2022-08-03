@@ -39,7 +39,7 @@ class HomeTableData extends DataTableSource {
             (e.assignedDriver == _data[index].email) &&
             (DateFormat('yMd').format(DateTime.parse(e.dueDate!)) ==
                 DateFormat('yMd').format(hc.dashboardSelectedDate)) &&
-            (e.status == 'Completed'))
+            (e.status == 'completed'))
         .length;
     return DataRow(cells: [
       DataCell(Text(_data[index].name.toString())),
