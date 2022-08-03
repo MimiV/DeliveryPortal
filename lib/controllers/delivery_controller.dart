@@ -127,6 +127,7 @@ class DeliveryController extends ChangeNotifier {
   // get driver from email
   String driverNameFromEmail(String email) {
     for (var driver in _allDrivers!) {
+      print("${driver.email}, $email");
       if (driver.email == email) {
         return driver.name!;
       }
@@ -216,7 +217,7 @@ class DeliveryController extends ChangeNotifier {
       String dateWeekday = DateFormat('E').format(pickedDate);
       //String date = DateFormat('yMd').format(pickedDate);
       //print("Driver: ${element.name}");
-      if (element.availability!.contains(dateWeekday)) {
+      if (element.email != "" && element.availability!.contains(dateWeekday)) {
         _availableDrivers!.add(element);
         //print("Driver: ${element.name} is available");
       }
@@ -254,12 +255,12 @@ class DeliveryController extends ChangeNotifier {
   Future<void> getAllDrivers() async {
     _allDrivers = await getDrivers();
     DriversModel temp = DriversModel(
-        "123", "Michael V", "michael@email.com", "123456789", 10, 0);
-    temp.availability = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+        "123", "Assign a Driver", "", "123456789", 10, 0);
+    // temp.availability = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     _allDrivers!.add(temp);
-    DriversModel temp2 = DriversModel(
-        "123", "Michael V", "", "123456789", 10, 0);
-    _allDrivers!.add(temp2);
+    // DriversModel temp2 = DriversModel(
+    //     "123", "Michael V", "", "123456789", 10, 0);
+    //_allDrivers!.add(temp2);
     notifyListeners();
   }
 

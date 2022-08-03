@@ -263,7 +263,7 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage>
               height: 20,
             ),
             Container(
-              height: 400,
+              height: 350,
               child: ListView.builder(
                 shrinkWrap: true,
                 itemCount: availableDrivers.length,
