@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:html' as html;
 import 'dart:typed_data';
-
+import 'package:intl/intl.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:deliveryportal/controllers/delivery_controller.dart';
 import 'package:deliveryportal/models/delivery_model.dart';
@@ -11,7 +11,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
+import 'package:multi_select_flutter/chip_field/multi_select_chip_field.dart';
+import 'package:multi_select_flutter/util/multi_select_item.dart';
+import 'package:multiselect/multiselect.dart';
 import 'package:provider/provider.dart';
+import 'package:roundcheckbox/roundcheckbox.dart';
 import '../../../constants/style.dart';
 import '../../../widgets/custom_text.dart';
 import '../../helpers/responsive_widget.dart';
@@ -39,10 +44,12 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage>
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<DeliveryModel> deliveries = [];
   List<DeliveryModel> displayList = [];
+  List<DriversModel> availableDrivers = [];
   int idx = 0;
   bool isDataLoaded = false;
   DateTime selectedDate = DateTime.now();
   String? selectedDriver;
+  List<DriversModel> selectedDrivers = [];
   @override
   void initState() {
     super.initState();
@@ -107,6 +114,20 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage>
     }
   }
 
+  _selectDateAvailability(BuildContext context, DeliveryController vm) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate, // Refer step 1
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        availableDrivers = vm.setAvailabeDrivers(picked)!;
+      });
+    }
+  }
+
   void _closeEndDrawer() {
     Navigator.of(context).pop();
   }
@@ -116,6 +137,7 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage>
     final deliveryController = Provider.of<DeliveryController>(context);
     deliveries = deliveryController.deliveryList;
     displayList = deliveryController.displayList;
+    availableDrivers = deliveryController.availableDriversList;
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
       child: Scaffold(
@@ -124,7 +146,7 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage>
             child: Column(
           children: [
             // load buttons up top
-            topButtons(deliveryController),
+            topButtons(deliveryController, availableDrivers),
 
             Container(
               height: MediaQuery.of(context).size.height * 0.8,
@@ -182,7 +204,122 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage>
     );
   }
 
-  Widget topButtons(deliveryController) {
+  Widget assignDriversPopUp(
+      DeliveryController vm, List availableDrivers, StateSetter setState) {
+    //final List<DriversModel> items = vm.availableDriversList;
+    List<String>? weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    List<String> selected = [];
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.3,
+      child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 0, left: 0.0, right: 10.0),
+                  child: CustomText(
+                    text: "Delivery date",
+                    color: Colors.black,
+                    weight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            FloatingActionButton.extended(
+                onPressed: () => _selectDateAvailability(context, vm),
+                isExtended: true,
+                label: CustomText(
+                    text: "${selectedDate.toLocal()}".split(' ')[0],
+                    color: Colors.white,
+                    size: 15),
+                icon: const Icon(Icons.calendar_month)),
+            SizedBox(
+              height: 50,
+            ),
+            CustomText(
+              text:
+                  "Available Drivers for ${DateFormat('EEEE').format(selectedDate.toLocal())} ${selectedDate.toLocal().month}/${selectedDate.toLocal().day}/${selectedDate.toLocal().year}",
+              color: Colors.black,
+              weight: FontWeight.bold,
+            ),
+            Container(
+              width: 500,
+              height: 50,
+              child: TextField(
+                decoration: InputDecoration(
+                  labelText: "Search Drivers",
+                  hintText: "Search Drivers",
+                ),
+                onChanged: (value) {
+                  selectedDriver = value;
+                },
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              height: 400,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: availableDrivers.length,
+                itemBuilder: (context, index) {
+                  return Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 400,
+                        child: ListTile(
+                          title: Text(availableDrivers[index].name!),
+                        ),
+                      ),
+                      // SizedBox(
+                      //   width: 20,
+                      // ),
+                      Container(
+                        child: RoundCheckBox(
+                          isChecked:
+                              selectedDrivers.contains(availableDrivers[index]),
+                          onTap: (selected) {
+                            // String currentDate =
+                            //     selectedDate.toString().split(' ')[0];
+                            if (selected!) {
+                              selectedDrivers.add(availableDrivers[index]);
+                            } else {
+                              selectedDrivers.remove(availableDrivers[index]);
+                            }
+                            setState(() {
+                              selectedDrivers = selectedDrivers;
+                            });
+
+                            String currentDate =
+                                DateFormat('yMd').format(selectedDate);
+                            //vm.checkAvailability(currentDate, selectedDate);
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+            MultiSelectChipDisplay(
+              items: selectedDrivers
+                  .map((e) => MultiSelectItem(e, e.name!))
+                  .toList(),
+              onTap: (value) {},
+            )
+          ]),
+    );
+  }
+
+  Widget topButtons(
+      DeliveryController deliveryController, List availableDrivers) {
     developer.log('Loading top buttons', name: 'DeliveriesSectionPage');
     return Padding(
       padding: const EdgeInsets.all(20.0),
@@ -191,8 +328,62 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage>
           FloatingActionButton.extended(
               backgroundColor: Colors.orange,
               onPressed: () async {
-                await Provider.of<DeliveryController>(context, listen: false)
-                    .assignDrivers("michael@email.com");
+                // await Provider.of<DeliveryController>(context, listen: false)
+                //     .assignDrivers("michael@email.com");
+                // showdialog with a form to assign drivers to deliveries
+                availableDrivers = deliveryController
+                    .setAvailabeDrivers(selectedDate.toLocal())!;
+                print(selectedDrivers);
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: const CustomText(text: "Assign Drivers"),
+                      content: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return assignDriversPopUp(
+                              deliveryController, availableDrivers, setState);
+                        },
+                        // child: assignDriversPopUp(
+                        //     deliveryController, availableDrivers),
+                      ),
+                      actions: [
+                        TextButton(
+                          child: const Text("cancel"),
+                          onPressed: () => {Navigator.pop(context, true)},
+                        ),
+                        TextButton(
+                          child: const Text("Confirm"),
+                          onPressed: () async {
+                            if (selectedDrivers.isNotEmpty) {
+                              Navigator.pop(context, true);
+                              deliveryController.assignDrivers(selectedDrivers);
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const CustomText(
+                                        text: "No Drivers Available"),
+                                    content: const Text(
+                                        "Please select a different date"),
+                                    actions: [
+                                      TextButton(
+                                        child: const Text("ok"),
+                                        onPressed: () =>
+                                            {Navigator.pop(context, true)},
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            }
+                          },
+                        )
+                      ],
+                    );
+                  },
+                );
               },
               label: const CustomText(
                   text: "Assign Drivers", color: Colors.white, size: 15),
@@ -202,8 +393,7 @@ class _DeliveriesSectionPage extends State<DeliveriesSectionPage>
           ),
           FloatingActionButton.extended(
               onPressed: () => _selectDate(context),
-              isExtended:
-                  ResponsiveWidget.isSmallScreen(context) ? false : true,
+              isExtended: true,
               label: CustomText(
                   text: "${selectedDate.toLocal()}".split(' ')[0],
                   color: Colors.white,

@@ -6,12 +6,14 @@ import 'package:flutter/material.dart';
 
 import '../models/delivery_model.dart';
 import '../services/database.dart';
+import 'package:intl/intl.dart';
 
 class DeliveryController extends ChangeNotifier {
   List<DeliveryModel>? _deliveryList;
   List<DeliveryModel>? _displayList;
   List<DeliveryModel>? _completedDeliveryList;
   List<DriversModel>? _allDrivers;
+  List<DriversModel>? _availableDrivers;
   bool? _loading;
   DriversModel? currentSelectedDriver;
   String? driverForPdf;
@@ -22,6 +24,7 @@ class DeliveryController extends ChangeNotifier {
     _completedDeliveryList = [];
     _loading = true;
     _allDrivers = [];
+    _availableDrivers = [];
   }
 
   List<DeliveryModel> get deliveryList => _deliveryList!;
@@ -29,12 +32,14 @@ class DeliveryController extends ChangeNotifier {
   List<DeliveryModel> get displayList => _displayList!;
   List<DeliveryModel> get completedDeliveryList => _completedDeliveryList!;
   List<DriversModel> get allDriversList => _allDrivers!;
+  List<DriversModel> get availableDriversList => _availableDrivers!;
 
   int get deliveryCount => _deliveryList!.length;
   int get completedDeliveryCount => _completedDeliveryList!.length;
 
   Future<void> getAllDeliveries() async {
     _deliveryList = await getDeliveries();
+    // sort by due date
     _deliveryList!.sort((a, b) => b.dueDate!.compareTo(a.dueDate!));
     _displayList = _deliveryList;
     // sort by due date
@@ -110,22 +115,114 @@ class DeliveryController extends ChangeNotifier {
   //   await getAllDeliveries();
   // }
 
-  Future<void> assignDrivers(driver) async {
-    for (var element in _deliveryList!) {
-      //element.assignedDriver = 'michael@email.com';
-      _deliveryList![_deliveryList!.indexOf(element)].assignedDriver = driver;
-      await updateDelivery(element.orderId, driver);
+  // update drivers avaibility
+  Future<void> updateDriversAvailability(DriversModel driver, options) async {
+    //for (DriversModel driver in _allDrivers!) {
+    // await updateDriverAvailability(
+    // driver.id, ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
+    //}
+    await updateDriverAvailability(driver.id, options);
+  }
+
+  // get driver from email
+  String driverNameFromEmail(String email) {
+    for (var driver in _allDrivers!) {
+      if (driver.email == email) {
+        return driver.name!;
+      }
     }
-    //_loading = true;
+    return "";
+  }
+
+  Future<void> assignDrivers(List availableDrivers) async {
+    List<DeliveryModel> unassignedDeliveries = _deliveryList!
+        .where((element) =>
+            element.assignedDriver == null || element.assignedDriver == "")
+        .toList();
+
+    int total = (unassignedDeliveries.length / availableDrivers.length) as int;
+    int remainder = unassignedDeliveries.length % availableDrivers.length;
+    int counter = 0;
+    for (var driver in availableDrivers) {
+      for (var i = 0; i < total; i++) {
+        if (unassignedDeliveries.length > 0) {
+          unassignedDeliveries[counter].assignedDriver = driver.email!;
+          counter++;
+        }
+      }
+    }
+
+    for (var i = 0; i < remainder; i++) {
+      if (unassignedDeliveries.length > 0) {
+        unassignedDeliveries[counter].assignedDriver =
+            availableDrivers[i].email!;
+        counter++;
+      }
+    }
+
+    for (var delivery in unassignedDeliveries) {
+      // driver id by email
+      String driverId = availableDrivers
+          .firstWhere((element) => element.email == delivery.assignedDriver)
+          .id;
+      await updateDelivery(delivery.orderId, delivery.assignedDriver, driverId);
+    }
+
     notifyListeners();
+
+    // for (var element in _deliveryList!) {
+    //   //element.assignedDriver = 'michael@email.com';
+    //   _deliveryList![_deliveryList!.indexOf(element)].assignedDriver = driver;
+    //   await updateDelivery(element.orderId, driver);
+    // }
+    //_loading = true;
     //await getAllDeliveries();
   }
 
   // assign driver to delivery
-  Future<void> assignDriver(driver, index) async {
-    _deliveryList![index].assignedDriver = driver;
-    await updateDelivery(_deliveryList![index].orderId, driver);
+  Future<void> assignDriver(driverName, index) async {
+    // get driver email by name
+    DriversModel driver =
+        _allDrivers!.firstWhere((element) => element.name == driverName);
+
+    _deliveryList![index].assignedDriver = driver.email!;
+    await updateDelivery(
+        _deliveryList![index].orderId, driver.email, driver.id);
     notifyListeners();
+  }
+
+  void checkAvailability(DateTime availableDate) {
+    for (DeliveryModel element in _deliveryList!) {
+      //String current = element.dueDate!.split('T')[0];
+      DateTime dueDate = DateTime.parse(element.dueDate!);
+      String deliveryDueDate = DateFormat('yMd').format(dueDate);
+      String deliveryWeekday = DateFormat('EEEE').format(dueDate);
+      String dateWeekday = DateFormat('E').format(availableDate);
+      String date = DateFormat('yMd').format(availableDate);
+      // print("weekday: $deliveryWeekday");
+      // print("driverWeekday: $dateWeekday");
+      // print("driverDate: $date");
+      // print("----------------------------------------------------");
+
+      // if (element.assignedDriver == driver) {
+      //   _deliveryList![_deliveryList!.indexOf(element)].assignedDriver = '';
+      // }
+    }
+    notifyListeners();
+  }
+
+  List<DriversModel>? setAvailabeDrivers(DateTime pickedDate) {
+    for (DriversModel element in _allDrivers!) {
+      String dateWeekday = DateFormat('E').format(pickedDate);
+      //String date = DateFormat('yMd').format(pickedDate);
+      //print("Driver: ${element.name}");
+      if (element.availability!.contains(dateWeekday)) {
+        _availableDrivers!.add(element);
+        //print("Driver: ${element.name} is available");
+      }
+    }
+    notifyListeners();
+    return _availableDrivers;
   }
 
   void test() {
@@ -158,6 +255,7 @@ class DeliveryController extends ChangeNotifier {
     _allDrivers = await getDrivers();
     DriversModel temp = DriversModel(
         "123", "Michael V", "michael@email.com", "123456789", 10, 0);
+    temp.availability = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     _allDrivers!.add(temp);
     DriversModel temp2 = DriversModel(
         "123", "Michael V", "", "123456789", 10, 0);
@@ -176,6 +274,7 @@ class DeliveryController extends ChangeNotifier {
   }
 
   List<DeliveryModel> getDeliveriesByDriver(String driver) {
+    //driver = driverNameFromEmail(driver);
     List<DeliveryModel> temp = _deliveryList!
         .where((element) => element.assignedDriver == driver)
         .toList();
@@ -184,5 +283,34 @@ class DeliveryController extends ChangeNotifier {
 
   DriversModel getDriverByEmail(String email) {
     return _allDrivers!.firstWhere((element) => element.email == email);
+  }
+
+  // number of deliveries for a select date
+  int getNumberOfDeliveriesByDate(DateTime date) {
+    String dateString = DateFormat('yMd').format(date);
+    int count = 0;
+    for (var element in _deliveryList!) {
+      String deliveryDate =
+          DateFormat('yMd').format(DateTime.parse(element.dueDate!));
+      if (deliveryDate == dateString) {
+        count++;
+      }
+    }
+    //print(count);
+    return count;
+  }
+
+  // number of completed deliveries by date
+  int getNumberOfCompletedDeliveriesByDate(DateTime date) {
+    String dateString = DateFormat('yMd').format(date);
+    int count = 0;
+    for (var element in _completedDeliveryList!) {
+      String deliveryDate =
+          DateFormat('yMd').format(DateTime.parse(element.dueDate!));
+      if (deliveryDate == dateString) {
+        count++;
+      }
+    }
+    return count;
   }
 }

@@ -13,7 +13,6 @@ import '../../../widgets/custom_text.dart';
 
 /// * example of stateful widget changing its value when edit is pressed
 class AvailableDriver extends StatefulWidget {
-  //int test_count = 0;
   AvailableDriver({Key? key}) : super(key: key);
 
   @override
@@ -21,14 +20,10 @@ class AvailableDriver extends StatefulWidget {
 }
 
 class _AvailableDriverState extends State<AvailableDriver> {
-
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
-    
   }
   // int test_count = 0;
 
@@ -61,6 +56,7 @@ class _AvailableDriverState extends State<AvailableDriver> {
   @override
   Widget build(BuildContext context) {
     final homeController = Provider.of<HomeController>(context);
+    //final drivers = homeController.setAvailabeDrivers(widget.date);
     return Container(
       alignment: Alignment.center,
       decoration: BoxDecoration(
@@ -74,15 +70,15 @@ class _AvailableDriverState extends State<AvailableDriver> {
         ],
         borderRadius: BorderRadius.circular(20),
       ),
-      margin: const EdgeInsets.only(top:30,bottom: 30,left: 15, right: 15),
-      child:
-       Column(
+      margin: const EdgeInsets.only(top: 30, bottom: 30, left: 15, right: 15),
+      child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(top:10, left: 40.0, right: 40.0),
+                padding:
+                    const EdgeInsets.only(top: 10, left: 40.0, right: 40.0),
                 child: CustomText(
                   text: "Available Drivers",
                   color: lightGrey,
@@ -95,10 +91,11 @@ class _AvailableDriverState extends State<AvailableDriver> {
             height: 20,
           ),
           Padding(
-            padding: const EdgeInsets.only(top:10, left: 40.0, right: 40.0, bottom: 10),
+            padding: const EdgeInsets.only(
+                top: 10, left: 40.0, right: 40.0, bottom: 10),
             child: TextField(
-              onChanged: (value){
-                homeController.filterList(value);
+              onChanged: (value) {
+                homeController.filterDasboardList(value);
               },
               style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
@@ -108,17 +105,19 @@ class _AvailableDriverState extends State<AvailableDriver> {
                       borderRadius: BorderRadius.circular(12.0),
                       borderSide: BorderSide.none),
                   hintText: "eg: Driver Name",
-                  hintStyle: const TextStyle(fontSize: 15.0, color: Colors.white),
-                  prefixIcon: const Icon(Icons.search, color: Colors.white,),
+                  hintStyle:
+                      const TextStyle(fontSize: 15.0, color: Colors.white),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
                   prefixIconColor: Colors.white),
             ),
           ),
-
-          if(homeController.loading)
+          if (homeController.dashboardLoading)
             const CircularProgressIndicator()
           else
-            ListOfDrivers(display_list: homeController.displayList)
-          
+            ListOfDrivers(display_list: homeController.dashboardDisplayList)
         ],
       ),
     );

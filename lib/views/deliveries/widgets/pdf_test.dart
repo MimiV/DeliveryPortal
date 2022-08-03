@@ -185,7 +185,7 @@ class _PdfLabPageState extends State<PdfLabPage> {
                     .map((item) => DropdownMenuItem<String>(
                           value: item.email,
                           child: Text(
-                            item.email!,
+                            item.name!,
                             style: const TextStyle(
                               fontSize: 14,
                             ),

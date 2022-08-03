@@ -12,7 +12,6 @@ import 'package:username_gen/username_gen.dart';
 import 'dart:developer' as developer;
 import '../models/drivers_mode.dart';
 
-
 // send data
 // sendData() {
 //   http.post(
@@ -41,7 +40,6 @@ import '../models/drivers_mode.dart';
 //   final prefs = await SharedPreferences.getInstance();
 //   return prefs.getBool('delivery_updated') ?? false;
 // }
-
 
 // get data
 // getData() async {
@@ -72,17 +70,16 @@ import '../models/drivers_mode.dart';
 //   print(response.body);
 // }
 
-
 Future<List<String>> addItemToDB(String items) async {
   List<String> allItems = items.split(',');
   List<String> itemIds = [];
   for (var element in allItems) {
     final response = await FirebaseFirestore.instance.collection("items").add({
-    'name': element,
-    'deliveryDriver': '',
-    'confirmed': false,
-    'delivered': false,
-    'status': "not_ready"
+      'name': element,
+      'deliveryDriver': '',
+      'confirmed': false,
+      'delivered': false,
+      'status': "not_ready"
     });
     print(response);
     itemIds.add(response.id);
@@ -91,59 +88,71 @@ Future<List<String>> addItemToDB(String items) async {
   return itemIds;
 }
 
-
-Future sendDeliveryDataToDB(name, address, phoneNumber,dueDate,itemString) async {
+Future sendDeliveryDataToDB(
+    name, address, phoneNumber, dueDate, itemString) async {
   List<String> docs = await addItemToDB(itemString);
 
   await FirebaseFirestore.instance.collection("deliveries").add({
     'name': name,
-    'address':address,
+    'address': address,
     'phoneNumber': phoneNumber,
     'assignedDriver': '',
     'items': docs,
     'dueDate': dueDate,
     'status': 'todo'
-
   });
 
   print("delivery done");
   final prefs = await SharedPreferences.getInstance();
-  prefs.setBool('delivery_updated', true);  
+  prefs.setBool('delivery_updated', true);
 }
 
-Future <void> updateDelivery(uid, driver) async {
+Future<void> updateDelivery(uid, driver, driver_id) async {
   FirebaseFirestore.instance.collection("deliveries").doc(uid).update({
-    'assignedDriver': driver
+    'assignedDriver': driver,
   });
+  updateDriverDeliveryAssigned(driver_id);
 }
 
-Future <void> addStatus(uid) async {
-  FirebaseFirestore.instance.collection("deliveries").doc(uid).update({
-    'status': 'todo'
-  });
+Future<void> addStatus(uid) async {
+  FirebaseFirestore.instance
+      .collection("deliveries")
+      .doc(uid)
+      .update({'status': 'todo'});
 }
 
-Future <void> addAvailability(uid) async {
-  FirebaseFirestore.instance.collection("drivers").doc(uid).update({
-    'availability': 'M-T-W-TH-F'
-  });
+// up driver delivery_assigned by 1
+Future<void> updateDriverDeliveryAssigned(uid) async {
+  FirebaseFirestore.instance
+      .collection("drivers")
+      .doc(uid)
+      .update({'deliveries_assigned': FieldValue.increment(1)});
 }
 
+Future<void> addAvailability(uid) async {
+  FirebaseFirestore.instance
+      .collection("drivers")
+      .doc(uid)
+      .update({'availability': 'M-T-W-TH-F'});
+}
 
 Future<QuerySnapshot<Map<String, dynamic>>> getAllDeliveries() async {
-    return await FirebaseFirestore.instance.collection('deliveries').get();
+  return await FirebaseFirestore.instance.collection('deliveries').get();
 }
 
 Future<QuerySnapshot<Map<String, dynamic>>> getAllDrivers() async {
-    return await FirebaseFirestore.instance.collection('drivers').get();
+  return await FirebaseFirestore.instance.collection('drivers').get();
 }
 
 Future<QuerySnapshot<Map<String, dynamic>>> getCompletedDeliveries() async {
-  return await FirebaseFirestore.instance.collection("deliveries").where('status', isEqualTo: 'completed').get();
+  return await FirebaseFirestore.instance
+      .collection("deliveries")
+      .where('status', isEqualTo: 'completed')
+      .get();
 }
 
 //Add drivers to firebase firestore
-Future<void> addDriverToDB(name,email, phoneNumber) async {
+Future<void> addDriverToDB(name, email, phoneNumber) async {
   await FirebaseFirestore.instance.collection("drivers").add({
     'name': name,
     'email': email,
@@ -154,7 +163,7 @@ Future<void> addDriverToDB(name,email, phoneNumber) async {
 }
 
 //Add drivers to firebase firestore
-Future<void> addDeliveryToDB(name,address, phoneNumber,dueDate,items) async {
+Future<void> addDeliveryToDB(name, address, phoneNumber, dueDate, items) async {
   List<String> docs = await addItemToDB(items);
   await FirebaseFirestore.instance.collection("drivers").add({
     'name': name,
@@ -165,10 +174,8 @@ Future<void> addDeliveryToDB(name,address, phoneNumber,dueDate,items) async {
   });
 }
 
-
-
 // register driver to firebase auth
-Future<void> registerDriver(name, email,phoneNumber) async {
+Future<void> registerDriver(name, email, phoneNumber) async {
   final auth = FirebaseAuth.instance;
   final driver = await auth.createUserWithEmailAndPassword(
       email: email, password: phoneNumber);
@@ -184,6 +191,14 @@ Future<void> registerDriver(name, email,phoneNumber) async {
   });
 }
 
+// update driver availability
+Future<void> updateDriverAvailability(uid, availability) async {
+  await FirebaseFirestore.instance
+      .collection("drivers")
+      .doc(uid)
+      .update({'availability': availability});
+}
+
 // return all drivers from firebase firestore
 Future<List<DriversModel>> getDrivers() async {
   final QuerySnapshot<Map<String, dynamic>> drivers = await getAllDrivers();
@@ -196,12 +211,13 @@ Future<List<DriversModel>> getDrivers() async {
 
 // get completed deliveries
 Future<List<DeliveryModel>> getAllCompletedDeliveries() async {
-  final QuerySnapshot<Map<String, dynamic>> deliveries = await getCompletedDeliveries();
+  final QuerySnapshot<Map<String, dynamic>> deliveries =
+      await getCompletedDeliveries();
   final List<DeliveryModel> deliveriesList = [];
   deliveries.docs.forEach((doc) {
     deliveriesList.add(DeliveryModel.fromSnapshot(doc));
   });
-  
+
   return deliveriesList;
 }
 
@@ -217,10 +233,9 @@ Future<List<DriversModel>> getDriversAvailableToday(String day) async {
   return driversList;
 }
 
-
-
 Future<List<DeliveryModel>> getDeliveries() async {
-  final QuerySnapshot<Map<String, dynamic>> deliveries = await getAllDeliveries();
+  final QuerySnapshot<Map<String, dynamic>> deliveries =
+      await getAllDeliveries();
   final List<DeliveryModel> deliveryList = [];
   deliveries.docs.forEach((doc) {
     deliveryList.add(DeliveryModel.fromSnapshot(doc));
@@ -229,37 +244,33 @@ Future<List<DeliveryModel>> getDeliveries() async {
   return deliveryList;
 }
 
-
 Future getDeliveryDataFromDB() async {
   await FirebaseFirestore.instance
-    .collection('deliveries')
-    .get()
-    .then((QuerySnapshot querySnapshot) {
-        querySnapshot.docs.forEach((doc) {
-          String? orderId = doc['id'];
-          String? name =doc["name"];
-          String? address = doc["address"];
-          String? phonenumber = '${doc['phoneNumber']}';
-          String? assignedDriver = doc['assignedDriver'];
+      .collection('deliveries')
+      .get()
+      .then((QuerySnapshot querySnapshot) {
+    querySnapshot.docs.forEach((doc) {
+      String? orderId = doc['id'];
+      String? name = doc["name"];
+      String? address = doc["address"];
+      String? phonenumber = '${doc['phoneNumber']}';
+      String? assignedDriver = doc['assignedDriver'];
 
-          //deliveryList.add(DeliveryModel(orderId,name, address, phonenumber, assignedDriver));
-            // print(doc["name"]);
-            // print(doc["address"]);
-            // print(doc["phoneNumber"]);
-            // print("----");
-        });
+      //deliveryList.add(DeliveryModel(orderId,name, address, phonenumber, assignedDriver));
+      // print(doc["name"]);
+      // print(doc["address"]);
+      // print(doc["phoneNumber"]);
+      // print("----");
     });
+  });
   print("got from database");
   //return deliveryList;
 }
 
-
 Future sendDriverData(String name, int deliveries, int completed) async {
-  await FirebaseFirestore.instance.collection("drivers_test").add({
-    'name': name,
-    'deliveries':deliveries,
-    'completed': completed
-});
+  await FirebaseFirestore.instance
+      .collection("drivers_test")
+      .add({'name': name, 'deliveries': deliveries, 'completed': completed});
   print("sent data to database");
 }
 
@@ -278,14 +289,15 @@ Future sendDriverData(String name, int deliveries, int completed) async {
 //     print("done");
 // }
 
-generateDrivers(){
-  String name = UsernameGen.generateWith(data: UsernameGenData(
+generateDrivers() {
+  String name = UsernameGen.generateWith(
+      data: UsernameGenData(
         names: ['new names'],
         adjectives: ['new adjectives'],
-    ),
-    seperator: ' ');
+      ),
+      seperator: ' ');
   Random random = new Random();
   int deliveries = random.nextInt(100);
   int completed = random.nextInt(30);
-  sendDriverData(name,deliveries,completed);
+  sendDriverData(name, deliveries, completed);
 }

@@ -24,14 +24,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  DateTime selectedDate = DateTime.now();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      Provider.of<HomeController>(context, listen:false).getAllDrivers();
+      Provider.of<HomeController>(context, listen: false).getAllDrivers();
+      Provider.of<DeliveryController>(context, listen: false).getAllDeliveries();
+      Provider.of<HomeController>(context, listen: false)
+          .getDashBoardAvailabeDrivers(selectedDate,context);
       //Provider.of<DeliveryController>(context, listen:false).getAllDeliveries();
-      Provider.of<DeliveryController>(context, listen:false).getCompleted();
+      Provider.of<DeliveryController>(context, listen: false).getCompleted();
     });
   }
 
@@ -54,25 +58,71 @@ class _HomePageState extends State<HomePage> {
           )),
       Expanded(
           child: ListView(
-            shrinkWrap: true,
+        shrinkWrap: true,
         children: [
           if (ResponsiveWidget.isLargeScreen(context) ||
               ResponsiveWidget.isMediumScreen(context))
             if (ResponsiveWidget.isCustomScreen(context))
-                HomeCardsMediumScreen(totalDeliveries: dc.deliveryCount, packageDelivered: dc.completedDeliveryCount)
+              HomeCardsMediumScreen(
+                  totalDeliveries: dc.getNumberOfDeliveriesByDate(selectedDate),
+                  packageDelivered:
+                      dc.getNumberOfCompletedDeliveriesByDate(selectedDate))
             else
-              Padding(
-                padding: EdgeInsets.all(20.0),
-                child:  HomeCardsLargeScreen(totalDeliveries: dc.deliveryCount, packageDelivered: dc.completedDeliveryCount),
+              Column(
+                children: [
+                  FloatingActionButton.extended(
+                      onPressed: () => _selectDate(context, hc),
+                      backgroundColor: Color(0xff0E1420),
+                      hoverColor: Colors.orange,
+                      isExtended: true,
+                      label: CustomText(
+                          text: "${selectedDate.toLocal()}".split(' ')[0],
+                          color: Colors.white,
+                          size: 15),
+                      icon: const Icon(Icons.calendar_month)),
+                  Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: HomeCardsLargeScreen(
+                        totalDeliveries:
+                            dc.getNumberOfDeliveriesByDate(selectedDate),
+                        packageDelivered:
+                            dc.getNumberOfCompletedDeliveriesByDate(
+                                selectedDate)),
+                  ),
+                ],
               )
           else
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child:  HomeCardsSmallScreen(totalDeliveries: dc.deliveryCount, packageDelivered: dc.completedDeliveryCount),
+            Column(
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: HomeCardsSmallScreen(
+                      totalDeliveries:
+                          dc.getNumberOfDeliveriesByDate(selectedDate),
+                      packageDelivered: dc
+                          .getNumberOfCompletedDeliveriesByDate(selectedDate)),
+                ),
+              ],
             ),
           AvailableDriver()
         ],
       ))
     ]);
+  }
+
+  _selectDate(BuildContext context, HomeController hc) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate, // Refer step 1
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        hc.dashboardSelectedDate = selectedDate;
+        hc.getDashBoardAvailabeDrivers(selectedDate,context);
+      });
+    }
   }
 }
